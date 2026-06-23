@@ -20,7 +20,10 @@ added per project when needed.
 - **GitHub Actions** CI: `check`, `lint`, `format`, `build`
 - **Cursor** agent setup (`.cursor/rules`, cloud environment, Dockerfile)
 - A minimal dummy app: layout shell, homepage, error page, server hooks
-- `BRAND.md` + `DESIGN.md` skeletons for per-project brand/design docs
+
+The per-project `BRAND.md` and `DESIGN.md` brand/design docs are **not** shipped
+here — they are created per project; their structure is described in
+[`TEMPLATE.md` §6](./TEMPLATE.md).
 
 See [`TEMPLATE.md`](./TEMPLATE.md) for the full recipe, conventions, and the list
 of optional features.
@@ -30,8 +33,8 @@ of optional features.
 When starting a new project, give an AI agent the link to this repository and the
 prompt template in [`TEMPLATE.md` §9](./TEMPLATE.md). Fill in the project specifics
 (name, locale, brand, features, integrations) and let it scaffold a sibling project
-following the same conventions. Then fill in `BRAND.md` and `DESIGN.md` for the new
-project.
+following the same conventions. Then create `BRAND.md` and `DESIGN.md` for the new
+project (structure in [`TEMPLATE.md` §6](./TEMPLATE.md)).
 
 ## Running the dummy app
 
@@ -70,12 +73,10 @@ once a feature introduces environment variables; keys are documented inline ther
 
 ## Reference docs
 
-| File                           | Contents                                                              |
-| ------------------------------ | --------------------------------------------------------------------- |
-| [`TEMPLATE.md`](./TEMPLATE.md) | Full project setup recipe + optional features (the "book of recipes") |
-| [`BRAND.md`](./BRAND.md)       | Per-project brand: voice, audience, personality (skeleton)            |
-| [`DESIGN.md`](./DESIGN.md)     | Per-project visual system: tokens, typography, components (skeleton)  |
-| `.cursor/`                     | AI agent rules, skills, subagents, and cloud environment              |
+| File                           | Contents                                                                         |
+| ------------------------------ | -------------------------------------------------------------------------------- |
+| [`TEMPLATE.md`](./TEMPLATE.md) | Full project setup recipe + optional features + `BRAND.md`/`DESIGN.md` structure |
+| `.cursor/`                     | AI agent rules, skills, subagents, and cloud environment                         |
 
 ## Languages
 

@@ -1,8 +1,8 @@
 /*
  * Global stylesheet. Structure mirrors the template convention:
- *   1. @fontsource imports (optional — see TEMPLATE.md / DESIGN.md)
+ *   1. @fontsource imports (optional — see TEMPLATE.md §4.2)
  *   2. @import 'tailwindcss'
- *   3. @theme { } — design tokens (kept in sync with DESIGN.md)
+ *   3. @theme { } — design tokens (kept in sync with the project's DESIGN.md)
  *   4. @layer base — fluid typography, base colors, global focus styles
  *
  * The base template uses a neutral system font stack. To use webfonts, add
@@ -16,7 +16,7 @@
   --color-*: initial;
   --font-*: initial;
 
-  /* Surfaces and text (neutral defaults — replace per project, see DESIGN.md) */
+  /* Surfaces and text (neutral defaults — replace per project; see TEMPLATE.md §6) */
   --color-background: #ffffff;
   --color-surface: #f8fafc;
   --color-border: #e2e8f0;

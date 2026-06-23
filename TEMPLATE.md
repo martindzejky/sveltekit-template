@@ -324,14 +324,14 @@ Tailwind import and repoint the `--font-*` tokens, e.g.:
 }
 ```
 
-Keep [`DESIGN.md`](./DESIGN.md) in sync with `@theme`.
+Keep the project's `DESIGN.md` in sync with `@theme`.
 
 ### 4.3 Components
 
 Tiered folders (`atoms/`, `molecules/`, `layout/`, `organisms/`) as complexity
 grows. The base template ships only `organisms/header.svelte` and
 `organisms/footer.svelte` for the shell. Document component contracts and page
-composition in [`DESIGN.md`](./DESIGN.md).
+composition in the project's `DESIGN.md`.
 
 ### 4.4 Routes
 
@@ -456,8 +456,9 @@ env:
 
 ## 6. Brand & design documentation
 
-Every project has two root-level docs (English): [`BRAND.md`](./BRAND.md) and
-[`DESIGN.md`](./DESIGN.md). This repo ships skeletons — fill them per project.
+Every project bootstrapped from this template has two root-level docs (English):
+`BRAND.md` and `DESIGN.md`. They are **created per project** and are intentionally
+not part of this template repo — use the structure below as the skeleton.
 
 ### `BRAND.md` — the "why"
 
