@@ -458,7 +458,9 @@ env:
 
 Every project bootstrapped from this template has two root-level docs (English):
 `BRAND.md` and `DESIGN.md`. They are **created per project** and are intentionally
-not part of this template repo — use the structure below as the skeleton.
+not part of this template repo — use the structure below as the skeleton. Use the
+`brand-md` and `design-md` agent skills (from agentfiles) to create and maintain
+them.
 
 ### `BRAND.md` — the "why"
 

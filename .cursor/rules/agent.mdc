@@ -27,10 +27,12 @@ If `pnpm check` misses `$env/static/*` exports, run `pnpm sync`.
 
 ## Design and brand
 
-When the project has them, read `BRAND.md` first (the "why"), then `DESIGN.md`
-(the "how") for any UI or visual work, and ship visual changes together with the
-matching `DESIGN.md` update. These docs are created per project (see `TEMPLATE.md`
-§6); the base template does not ship them.
+If `BRAND.md` and `DESIGN.md` exist (they usually do on larger projects, but the
+base template does not ship them — see `TEMPLATE.md` §6), read `BRAND.md` first
+(the "why"), then `DESIGN.md` (the "how") for any UI or visual work, and ship
+visual changes together with the matching `DESIGN.md` update.
+
+Use the `brand-md` and `design-md` skills when creating or maintaining these files.
 
 ## Git hooks
 
