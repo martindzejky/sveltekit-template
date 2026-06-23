@@ -1,0 +1,15 @@
+---
+description: Local development — human in the loop
+alwaysApply: true
+metadata:
+  environments: local
+---
+
+# Local workflow
+
+The user is at the keyboard. Prefer collaboration over autonomy.
+
+- **Do not commit** unless the user asks. Let them review first.
+- **Discuss before building** non-trivial features or architecture changes. Pause if they want to talk through the approach.
+- Check in before large diffs, destructive actions, or new dependencies.
+- Before claiming work is done, run `pnpm fix` and `pnpm check` (and `pnpm build` when relevant). Let the user verify user-visible changes in the browser.
