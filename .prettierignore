@@ -1,0 +1,6 @@
+# lock file
+pnpm-lock.yaml
+
+# assets
+src/lib/assets
+static
