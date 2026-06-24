@@ -1,0 +1,48 @@
+---
+description: Agent context and workflow
+alwaysApply: true
+---
+
+# Agent instructions
+
+**Read `README.md` first** for local setup, services, integrations, and reference docs.
+
+`TEMPLATE.md` documents the project setup and the optional features (database,
+email, payments, analytics, background jobs, …) that can be added later.
+
+If docs and code disagree, trust code and update docs in the same change.
+
+If anything is unclear or instructions conflict, STOP and ask.
+
+## Code and verification
+
+After you finish, run `pnpm fix` and `pnpm check` (and `pnpm build` when relevant).
+Write simple, minimal code.
+Prefer existing patterns.
+Good accessibility is required.
+Do not add unrequested features or APIs.
+Store temporary artifacts in `tmp/`, not the repo root.
+
+If `pnpm check` misses `$env/static/*` exports, run `pnpm sync`.
+
+## Design and brand
+
+If `BRAND.md` and `DESIGN.md` exist (they usually do on larger projects, though the
+base template does not ship them; see `TEMPLATE.md` §6), read `BRAND.md` first for
+the why, then `DESIGN.md` for the how on any UI or visual work. Ship visual changes
+together with the matching `DESIGN.md` update.
+
+Use the `brand-md` and `design-md` skills when creating or maintaining these files.
+
+## Git hooks
+
+`lefthook` runs `pnpm check`, `pnpm lint`, and `pnpm format` on `git push`.
+Install hooks via `pnpm install` (the `prepare` script runs `lefthook install`).
+
+## Languages
+
+- **<SITE_LOCALE> (user-facing copy):** only website copy in `src/` (and strings you
+  add or edit there). Replace `<SITE_LOCALE>` with the project's locale and grammar
+  rules (for example: Slovak, feminine form, with diacritics).
+- **English:** source code, `README.md`, `TEMPLATE.md`, `docs/**`, `BRAND.md`,
+  `DESIGN.md`, AI chat, commits, PRs, and issues.
