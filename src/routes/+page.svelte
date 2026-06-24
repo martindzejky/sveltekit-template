@@ -31,7 +31,7 @@
 
   <div class="flex flex-wrap items-center justify-center gap-3">
     <a
-      href="/TEMPLATE.md"
+      href="https://github.com/martindzejky/sveltekit-template/blob/master/TEMPLATE.md"
       class="inline-flex h-10 items-center justify-center rounded-md bg-accent px-4 font-medium text-background transition hover:bg-accent-dark focus-visible:bg-accent-dark focus-visible:outline-accent-dark motion-safe:hover:scale-105 motion-safe:active:scale-95"
     >
       Read the template guide
