@@ -496,12 +496,12 @@ Three rules, generalized in this repo:
 ### 7.2 Skills
 
 Task-specific skills go in **`.cursor/skills/<skill-name>/SKILL.md`** (per project;
-none shipped, see `.cursor/skills/README.md`).
+none shipped).
 
 ### 7.3 Subagents
 
 Subagent definitions go in **`.cursor/agents/<agent-name>.md`** (per project; none
-shipped, see `.cursor/agents/README.md`).
+shipped).
 
 ### 7.4 Cloud environment
 
