@@ -1,13 +1,13 @@
 # sveltekit-template
 
-An opinionated **SvelteKit project template** — my go-to stack, tooling, configs,
-and conventions for spinning up new websites. Clone it, point an AI agent at it,
-and bootstrap a new site with a consistent setup every time.
+An opinionated **SvelteKit project template** with my go-to stack, tooling,
+configs, and conventions for spinning up new websites. Clone it, point an AI agent
+at it, and bootstrap a new site with a consistent setup every time.
 
 This repository ships the **core stack only** plus a small dummy app. Optional
-features (database, email, payments, analytics, background jobs, …) are **not**
-installed — they are documented in [`TEMPLATE.md`](./TEMPLATE.md) so they can be
-added per project when needed.
+features (database, email, payments, analytics, background jobs) are **not**
+installed. They live in [`TEMPLATE.md`](./TEMPLATE.md) so you can add them per
+project when needed.
 
 ## What's inside
 
@@ -22,7 +22,7 @@ added per project when needed.
 - A minimal dummy app: layout shell, homepage, error page, server hooks
 
 The per-project `BRAND.md` and `DESIGN.md` brand/design docs are **not** shipped
-here — they are created per project; their structure is described in
+here. You create them per project, and their structure is described in
 [`TEMPLATE.md` §6](./TEMPLATE.md).
 
 See [`TEMPLATE.md`](./TEMPLATE.md) for the full recipe, conventions, and the list

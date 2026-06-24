@@ -16,7 +16,7 @@ the dummy content.
 > per project as needed.
 
 Use this document (and [`README.md`](./README.md)) as the primary prompt/context
-when asking an AI agent to scaffold a sibling project — see §9 for the prompt
+when asking an AI agent to scaffold a sibling project. See §9 for the prompt
 template.
 
 ---
@@ -25,20 +25,20 @@ template.
 
 ### Core (every project)
 
-| Layer           | Choice                                                                         | In this repo                |
-| --------------- | ------------------------------------------------------------------------------ | --------------------------- |
-| Runtime         | Node.js **24+** (`engines.node`, `.nvmrc`, CI)                                 | ✓                           |
-| Package manager | **pnpm** (`packageManager` field, `engine-strict=true` in `.npmrc`)            | ✓                           |
-| Framework       | **Svelte** + **SvelteKit** (SSR, file-based routing)                           | ✓                           |
-| Build           | **Vite**                                                                       | ✓                           |
-| Deploy          | **Railway** with **`@sveltejs/adapter-node`**                                  | ✓                           |
-| CSS             | **Tailwind CSS v4** via `@tailwindcss/vite` + `@theme` tokens in `src/app.css` | ✓                           |
-| Images          | **`@sveltejs/enhanced-img`**                                                   | ✓                           |
-| Icons           | **`@lucide/svelte`**                                                           | ✓                           |
-| Fonts           | **`@fontsource/*`**                                                            | — (system stack by default) |
-| SEO             | **super-sitemap**, **schema-dts**                                              | super-sitemap ✓             |
-| Git hooks       | **lefthook** (`pnpm check`/`lint`/`format` on pre-push)                        | ✓                           |
-| CI              | GitHub Actions: `check`, `lint`, `format`, `build`                             | ✓                           |
+| Layer           | Choice                                                                         | In this repo            |
+| --------------- | ------------------------------------------------------------------------------ | ----------------------- |
+| Runtime         | Node.js **24+** (`engines.node`, `.nvmrc`, CI)                                 | ✓                       |
+| Package manager | **pnpm** (`packageManager` field, `engine-strict=true` in `.npmrc`)            | ✓                       |
+| Framework       | **Svelte** + **SvelteKit** (SSR, file-based routing)                           | ✓                       |
+| Build           | **Vite**                                                                       | ✓                       |
+| Deploy          | **Railway** with **`@sveltejs/adapter-node`**                                  | ✓                       |
+| CSS             | **Tailwind CSS v4** via `@tailwindcss/vite` + `@theme` tokens in `src/app.css` | ✓                       |
+| Images          | **`@sveltejs/enhanced-img`**                                                   | ✓                       |
+| Icons           | **`@lucide/svelte`**                                                           | ✓                       |
+| Fonts           | **`@fontsource/*`**                                                            | system stack by default |
+| SEO             | **super-sitemap**, **schema-dts**                                              | super-sitemap ✓         |
+| Git hooks       | **lefthook** (`pnpm check`/`lint`/`format` on pre-push)                        | ✓                       |
+| CI              | GitHub Actions: `check`, `lint`, `format`, `build`                             | ✓                       |
 
 > **Database is treated as optional here.** Many quick projects ship without one
 > and add Postgres + Prisma later (see the optional table and §4.6). If a project
@@ -62,7 +62,7 @@ template.
 
 ## 2. Repository layout
 
-Generic skeleton — add `lib/` subfolders and routes only for features the project
+Generic skeleton. Add `lib/` subfolders and routes only for features the project
 uses. Files marked _(optional)_ are not in this repo; add them with the recipes below.
 
 ```
@@ -124,7 +124,7 @@ Use this repository as the starting point (clone/copy), or scaffold fresh and
 copy the config files. Install dependencies using **latest available versions**;
 add only what the target project needs.
 
-**Core installs** (already in this repo's `package.json` — see it for exact versions):
+**Core installs** (already in this repo's `package.json`; see it for exact versions):
 
 - `@sveltejs/adapter-node`, `@sveltejs/kit`, `svelte`, `vite`,
   `@sveltejs/vite-plugin-svelte`, `@sveltejs/enhanced-img`
@@ -143,7 +143,7 @@ add only what the target project needs.
 
 ### 3.2 Root config files
 
-These are present in the repo — they are the source of truth. Copy patterns,
+These are present in the repo and are the source of truth. Copy patterns,
 adjust values:
 
 | File                  | In repo | Notes                                                                                     |
@@ -157,8 +157,8 @@ adjust values:
 | `eslint.config.mjs`   | ✓       | flat config: js + ts + svelte + prettier                                                  |
 | `pnpm-workspace.yaml` | ✓       | `allowBuilds` for esbuild/sharp/lefthook (add `prisma`/`@prisma/engines` with Prisma)     |
 | `tsconfig.json`       | ✓       | extends `.svelte-kit/tsconfig.json`, `strict`, `moduleResolution: bundler`                |
-| `svelte.config.js`    | ✓       | see file — `adapter-node` + `vitePreprocess`                                              |
-| `vite.config.ts`      | ✓       | see file — `enhancedImages()`, `sveltekit()`, `tailwindcss()`                             |
+| `svelte.config.js`    | ✓       | `adapter-node` + `vitePreprocess` (see file)                                              |
+| `vite.config.ts`      | ✓       | `enhancedImages()`, `sveltekit()`, `tailwindcss()` (see file)                             |
 
 **`package.json` scripts.** See [`package.json`](./package.json) for the live set.
 Core scripts: `prepare` (`svelte-kit sync; lefthook install || true`), `sync`,
@@ -180,7 +180,7 @@ When you add a **background worker**, add:
 { "start-worker": "sh scripts/start-worker.sh" }
 ```
 
-**`prisma.config.ts`** _(optional — add with Prisma)_:
+**`prisma.config.ts`** _(optional, add with Prisma)_:
 
 ```ts
 import 'dotenv/config';
@@ -195,7 +195,7 @@ export default defineConfig({
 });
 ```
 
-**`prisma/schema.prisma`** _(optional)_ — generator outputs to `../src/generated/prisma`;
+**`prisma/schema.prisma`** _(optional)_. Generator outputs to `../src/generated/prisma`,
 datasource is PostgreSQL. Define models for that project's data needs only:
 
 ```prisma
@@ -213,9 +213,9 @@ datasource db {
 
 Add a `docker-compose.yml` only when the project uses local services. Standard trio:
 
-1. **postgres:16** — app DB (healthcheck via `pg_isready`)
-2. **maildev** — SMTP capture (if sending email)
-3. **umami** — analytics (if using Umami)
+1. **postgres:16**. App DB (healthcheck via `pg_isready`)
+2. **maildev**. SMTP capture (if sending email)
+3. **umami**. Analytics (if using Umami)
 
 Wait for Postgres `healthy` before migrations. Omit services the project does not use.
 
@@ -257,7 +257,7 @@ volumes:
   postgres_data:
 ```
 
-(Umami needs its own database — create it via a Postgres init config, e.g. a
+(Umami needs its own database. Create it via a Postgres init config, e.g. a
 `configs:` entry that runs `CREATE DATABASE umami;`.)
 
 ### 3.4 Environment variables
@@ -265,7 +265,7 @@ volumes:
 Pattern: **every** `$env/static/*` import must exist at build time. Document all
 keys in [`.env.example`](./.env.example) with placeholders (never empty strings).
 
-Do not list env vars in the README — point to `.env.example`, where keys are
+Do not list env vars in the README. Point to `.env.example`, where keys are
 explained by comments.
 
 After env changes: `pnpm sync` regenerates SvelteKit env types.
@@ -293,8 +293,8 @@ All projects deploy on **Railway**:
 - Attach Railway Postgres (if using a DB)
 - Set all env vars from `.env.example` in the Railway dashboard
 - Optional second Railway service for `pnpm start-worker` when using background jobs
-- Preview deploys use `*.up.railway.app` — accounted for in
-  [`src/hooks.server.ts`](./src/hooks.server.ts) redirect rules
+- Preview deploys use `*.up.railway.app`, which the
+  [`src/hooks.server.ts`](./src/hooks.server.ts) redirect rules account for
 
 ---
 
@@ -344,9 +344,9 @@ separate routes; dynamic segments via `[param]`. SEO endpoints live at
 
 ### 4.5 Server hooks
 
-[`src/hooks.server.ts`](./src/hooks.server.ts): production URL policy — skip
-`localhost`, force HTTPS, skip Railway preview domains (`*.up.railway.app`), enforce
-the canonical host. The default forces `www.`; switch to apex per project.
+[`src/hooks.server.ts`](./src/hooks.server.ts) holds the production URL policy. It
+skips `localhost`, forces HTTPS, skips Railway preview domains (`*.up.railway.app`),
+and enforces the canonical host. The default forces `www.`. Switch to apex per project.
 
 ### 4.6 Prisma client _(optional)_
 
@@ -368,7 +368,7 @@ script (§3.2).
 
 Web requests enqueue DB rows; a separate `pnpm start-worker` process drains them.
 The reference implementation uses Postgres `LISTEN/NOTIFY`, `FOR UPDATE SKIP
-LOCKED`, retries, and job dependencies — adopt this pattern or simplify per project.
+LOCKED`, retries, and job dependencies. Adopt this pattern or simplify per project.
 The worker is a `vite-node` entry (`src/cli/worker.ts`) launched via
 `scripts/start-worker.sh`:
 
@@ -427,8 +427,8 @@ on `pre-push`. Installed via `pnpm install` → `prepare` script.
 
 ### CI
 
-[`.github/workflows/ci.yml`](./.github/workflows/ci.yml): four parallel jobs on
-push/PR — `check`, `lint`, `format`, `build`. Node 24, `pnpm install
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs four parallel jobs on
+push and PR: `check`, `lint`, `format`, `build`. Node 24, `pnpm install
 --frozen-lockfile`. When the app imports `$env/static/*` keys, add an `env:` block
 injecting a placeholder for **every** key (mirror `.env.example`), for example:
 
@@ -440,7 +440,7 @@ env:
 
 ### Cloud agent ([`.cursor/rules/cloud.mdc`](./.cursor/rules/cloud.mdc))
 
-- No `.env` files — secrets from the Cursor dashboard
+- No `.env` files; secrets come from the Cursor dashboard
 - Start the Docker daemon before compose (only if the project uses services)
 - Non-interactive migrations: `prisma migrate dev --name <snake_case> --create-only`
   then `pnpm db:migrate:deploy` (only if using Prisma)
@@ -458,16 +458,16 @@ env:
 
 Every project bootstrapped from this template has two root-level docs (English):
 `BRAND.md` and `DESIGN.md`. They are **created per project** and are intentionally
-not part of this template repo — use the structure below as the skeleton. Use the
+not part of this template repo. Use the structure below as the skeleton, and use the
 `brand-md` and `design-md` agent skills (from agentfiles) to create and maintain
 them.
 
-### `BRAND.md` — the "why"
+### `BRAND.md`: the why
 
 One-sentence brand mood, audience and positioning, tone of voice and vocabulary,
 high-level visual personality (not tokens), and the tiebreaker rule.
 
-### `DESIGN.md` — the "how"
+### `DESIGN.md`: the how
 
 Color palette and `@theme` token table, typography (families, fluid base size,
 text-role catalog), layout primitives and composition, component contracts, focus/
@@ -488,31 +488,31 @@ classes.
 
 Three rules, generalized in this repo:
 
-- [`agent.mdc`](./.cursor/rules/agent.mdc) — universal: read README first,
-  verification commands, language policy, minimal diffs, points at `BRAND.md`/`DESIGN.md`
-- [`cloud.mdc`](./.cursor/rules/cloud.mdc) — autonomous cloud workflow (metadata: `environments: cloud`)
-- [`local.mdc`](./.cursor/rules/local.mdc) — collaborative local workflow (metadata: `environments: local`)
+- [`agent.mdc`](./.cursor/rules/agent.mdc) is the universal rule: read README first,
+  verification commands, language policy, minimal diffs, and pointers to `BRAND.md`/`DESIGN.md`
+- [`cloud.mdc`](./.cursor/rules/cloud.mdc) is the autonomous cloud workflow (metadata: `environments: cloud`)
+- [`local.mdc`](./.cursor/rules/local.mdc) is the collaborative local workflow (metadata: `environments: local`)
 
 ### 7.2 Skills
 
 Task-specific skills go in **`.cursor/skills/<skill-name>/SKILL.md`** (per project;
-none shipped — see `.cursor/skills/README.md`).
+none shipped, see `.cursor/skills/README.md`).
 
 ### 7.3 Subagents
 
 Subagent definitions go in **`.cursor/agents/<agent-name>.md`** (per project; none
-shipped — see `.cursor/agents/README.md`).
+shipped, see `.cursor/agents/README.md`).
 
 ### 7.4 Cloud environment
 
 Reused in every project:
 
-- [`.cursor/environment.json`](./.cursor/environment.json) — build via Dockerfile,
-  start Docker, install via `install.sh`
-- [`.cursor/install.sh`](./.cursor/install.sh) — `nvm install`,
-  `corepack prepare --activate`, `pnpm install --frozen-lockfile`
-- [`.cursor/Dockerfile`](./.cursor/Dockerfile) — Ubuntu + Docker + NVM Node 24 +
-  agentfiles install
+- [`.cursor/environment.json`](./.cursor/environment.json) builds via the Dockerfile,
+  starts Docker, and installs via `install.sh`
+- [`.cursor/install.sh`](./.cursor/install.sh) runs `nvm install`,
+  `corepack prepare --activate`, and `pnpm install --frozen-lockfile`
+- [`.cursor/Dockerfile`](./.cursor/Dockerfile) provides Ubuntu + Docker + NVM Node 24
+  and installs agentfiles
 
 ---
 
@@ -555,7 +555,7 @@ Deliver:
 2. BRAND.md and DESIGN.md for this project
 3. README.md with setup, env pointer, Railway deploy notes
 4. .cursor/rules (+ skills/agents only if useful for this project)
-5. docker-compose + .env.example (services matching integrations) — only if needed
+5. docker-compose + .env.example (services matching integrations), only if needed
 6. Minimal working homepage + layout shell
 7. CI workflow
 8. pnpm fix && pnpm check && pnpm build passing

@@ -1,5 +1,5 @@
 ---
-description: Local development — human in the loop
+description: Local development, human in the loop
 alwaysApply: true
 metadata:
   environments: local
