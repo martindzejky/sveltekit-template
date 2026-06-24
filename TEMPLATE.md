@@ -346,7 +346,7 @@ separate routes; dynamic segments via `[param]`. SEO endpoints live at
 
 [`src/hooks.server.ts`](./src/hooks.server.ts) holds the production URL policy. It
 skips `localhost`, forces HTTPS, skips Railway preview domains (`*.up.railway.app`),
-and enforces the canonical host. The default forces `www.`. Switch to apex per project.
+and forces the canonical `www.` host.
 
 ### 4.6 Prisma client _(optional)_
 

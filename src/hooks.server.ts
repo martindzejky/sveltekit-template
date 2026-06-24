@@ -1,8 +1,5 @@
 import { redirect, type Handle } from '@sveltejs/kit';
 
-// Production URL policy. Adjust the canonical-host rule per project:
-// some sites prefer the apex domain, others the `www.` subdomain. The default
-// below forces `www.`; flip or remove the final block as needed.
 export const handle: Handle = async ({ event, resolve }) => {
   // ignore localhost
   if (event.url.hostname.startsWith('localhost')) {
@@ -16,12 +13,12 @@ export const handle: Handle = async ({ event, resolve }) => {
     return redirect(308, target);
   }
 
-  // ignore Railway generated domains (preview deploys)
+  // ignore Railway generated domains
   if (event.url.hostname.endsWith('.up.railway.app')) {
     return resolve(event);
   }
 
-  // force www (canonical host) — change per project
+  // force www
   if (!event.url.hostname.startsWith('www.')) {
     const target = new URL(event.url);
     target.hostname = 'www.' + target.hostname;
