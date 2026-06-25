@@ -49,7 +49,8 @@ Use a short, descriptive migration name (e.g. `add_contact_source`, `drop_legacy
 - For create/update/review flow, follow the `github-pull-requests` skill.
 - **Before every `git commit`:** read the `git-commit-style` skill and follow it exactly. Always use the `git-commit-style` skill for writing the commit messages. If instructions conflict on commit messages, `git-commit-style` wins over generic "descriptive commit" wording.
 - **Issue-driven PRs:** When work comes from a GitHub issue, the PR description must include a **References** section with `Closes #<number>` (linked to the issue) so the issue auto-closes on merge. Use proper capitalization.
-- **Tagged on an issue:** Your final cloud output is posted as the Cursor bot comment on the issue. The user usually does not see WIP messages, so end with a short summary, link to the open PR, and any blockers. Keep it concise.
+- **Tagged on an issue:** Your final cloud output message is posted as the Cursor bot comment on the issue.
+  The user usually does not see WIP messages, so end with a short summary, link to the open PR, and any blockers. Keep it concise.
 
 ## Verification gate
 

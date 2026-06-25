@@ -1,28 +1,30 @@
-# sveltekit-template
+# SvelteKit web project template
 
-An opinionated **SvelteKit project template** with my go-to stack, tooling,
+An opinionated **SvelteKit web project template** with my go-to stack, tooling,
 configs, and conventions for spinning up new websites. Clone it, point an AI agent
 at it, and bootstrap a new site with a consistent setup every time.
 
+My goal is to keep this repository up-to-date with my latest conventions
+and preferences.
+
 This repository ships the **core stack only** plus a small dummy app. Optional
-features (database, email, payments, analytics, background jobs) are **not**
-installed. They live in [`TEMPLATE.md`](./TEMPLATE.md) so you can add them per
+features (database, email, payments, analytics, background jobs) are not
+installed. They are described in [`TEMPLATE.md`](./TEMPLATE.md) so you can add them per
 project when needed.
 
 ## What's inside
 
-- **SvelteKit** + **Svelte 5** + **Vite**, deployed on **Railway** via
-  `@sveltejs/adapter-node`
-- **Tailwind CSS v4** (`@tailwindcss/vite` + `@theme` tokens), `@sveltejs/enhanced-img`,
-  `@lucide/svelte`
+- **SvelteKit** + **Svelte 5** + **Vite**, deployed on **Railway** via `@sveltejs/adapter-node`
+- **Tailwind CSS v4** (`@tailwindcss/vite` + `@theme` tokens)
+- `@sveltejs/enhanced-img` for images, `@lucide/svelte` for icons
 - **TypeScript**, **ESLint** (flat config) + **Prettier**, **lefthook** git hooks
 - **super-sitemap** + `robots.txt` / `sitemap.xml` routes
 - **GitHub Actions** CI: `check`, `lint`, `format`, `build`
-- **Cursor** agent setup (`.cursor/rules`, cloud environment, Dockerfile)
+- Cursor agent setup (`.cursor`, cloud environment, Dockerfile)
 - A minimal dummy app: layout shell, homepage, error page, server hooks
 
 See [`TEMPLATE.md`](./TEMPLATE.md) for the full recipe, conventions, and the list
-of optional features.
+of optional features. This is the go-to recipe book for my projects.
 
 ## Using this as a template
 
@@ -63,18 +65,16 @@ The dev server serves the dummy homepage. Replace `src/routes` and
 
 `pnpm sync` regenerates `$env/static/*` types after env or SvelteKit config changes.
 
-There is no `.env` requirement in the base template. Copy `.env.example` to `.env`
-once a feature introduces environment variables; keys are documented inline there.
-
 ## Reference docs
 
 | File                           | Contents                                                 |
 | ------------------------------ | -------------------------------------------------------- |
+| `README.md` (this file)        | Description of this template repository                  |
 | [`TEMPLATE.md`](./TEMPLATE.md) | Full project setup recipe and optional features          |
-| `.cursor/`                     | AI agent rules, skills, subagents, and cloud environment |
+| `.cursor`                      | AI agent rules, skills, subagents, and cloud environment |
 
 ## Languages
 
-User-facing copy in `src/` uses the project's site locale (set per project).
-**English** is used for source code, documentation, tooling, AI conversations,
-commits, PRs, and issues.
+Some of my projects may be in a different language than English. In this case,
+user-facing copy in `src/` uses the project's site locale. **English** is used
+for source code, documentation, tooling, AI conversations, commits, PRs, and issues.

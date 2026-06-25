@@ -1,6 +1,7 @@
 # Web project bootstrap template
 
-Reference for spinning up new websites with the **same project setup**: stack,
+This file is my recipe book for my web projects. It is a reference for
+spinning up new websites with the **same project setup**: stack,
 tooling, folder conventions, developer experience, deployment, and AI agent
 configuration.
 
@@ -23,22 +24,23 @@ template.
 
 ## 1. Stack at a glance
 
-### Core (every project)
+### Core (same in every project)
 
-| Layer           | Choice                                                                         | In this repo            |
-| --------------- | ------------------------------------------------------------------------------ | ----------------------- |
-| Runtime         | Node.js **24+** (`engines.node`, `.nvmrc`, CI)                                 | ✓                       |
-| Package manager | **pnpm** (`packageManager` field, `engine-strict=true` in `.npmrc`)            | ✓                       |
-| Framework       | **Svelte** + **SvelteKit** (SSR, file-based routing)                           | ✓                       |
-| Build           | **Vite**                                                                       | ✓                       |
-| Deploy          | **Railway** with **`@sveltejs/adapter-node`**                                  | ✓                       |
-| CSS             | **Tailwind CSS v4** via `@tailwindcss/vite` + `@theme` tokens in `src/app.css` | ✓                       |
-| Images          | **`@sveltejs/enhanced-img`**                                                   | ✓                       |
-| Icons           | **`@lucide/svelte`**                                                           | ✓                       |
-| Fonts           | **`@fontsource/*`**                                                            | system stack by default |
-| SEO             | **super-sitemap**, **schema-dts**                                              | super-sitemap ✓         |
-| Git hooks       | **lefthook** (`pnpm check`/`lint`/`format` on pre-push)                        | ✓                       |
-| CI              | GitHub Actions: `check`, `lint`, `format`, `build`                             | ✓                       |
+| Layer              | Choice                                                                         | In this repo            |
+| ------------------ | ------------------------------------------------------------------------------ | ----------------------- |
+| Runtime            | Node.js **24+** (`engines.node`, `.nvmrc`, CI)                                 | ✓                       |
+| Package manager    | **pnpm** (`packageManager` field, `engine-strict=true` in `.npmrc`)            | ✓                       |
+| Framework          | **Svelte** + **SvelteKit** (SSR, file-based routing)                           | ✓                       |
+| Build              | **Vite**                                                                       | ✓                       |
+| Deploy             | **Railway** with **`@sveltejs/adapter-node`**                                  | ✓                       |
+| CSS                | **Tailwind CSS v4** via `@tailwindcss/vite` + `@theme` tokens in `src/app.css` | ✓                       |
+| Images             | **`@sveltejs/enhanced-img`**                                                   | ✓                       |
+| Icons              | **`@lucide/svelte`**                                                           | ✓                       |
+| Fonts              | **`@fontsource/*`** fonts as needed                                            | system stack by default |
+| SEO                | **super-sitemap**, **schema-dts**                                              | super-sitemap only ✓    |
+| Git hooks          | **lefthook** (`pnpm check`/`lint`/`format` on pre-push)                        | ✓                       |
+| CI                 | GitHub Actions: `check`, `lint`, `format`, `build`                             | ✓                       |
+| Cursor agent setup | `.cursor`, AI rule files with instructions + full setup for cloud agents       | ✓                       |
 
 > **Database is treated as optional here.** Many quick projects ship without one
 > and add Postgres + Prisma later (see the optional table and §4.6). If a project
@@ -46,23 +48,26 @@ template.
 
 ### Optional (install only when the project needs them)
 
-| Layer           | Packages / services                                         | When                          |
-| --------------- | ----------------------------------------------------------- | ----------------------------- |
-| Database        | **PostgreSQL 16** + **Prisma** (`@prisma/adapter-pg`, `pg`) | Persistent data               |
-| Email           | **Nodemailer** + Maildev in Docker                          | Forms, transactional email    |
-| Payments        | **Stripe** + `@stripe/stripe-js`                            | Checkout                      |
-| Invoicing       | **SuperFaktura** or similar                                 | Post-purchase invoicing       |
-| Analytics       | **Umami** (Docker locally; env in prod)                     | Privacy-friendly analytics    |
-| Background jobs | **vite-node** + `src/cli/worker.ts`                         | Async email/files/webhooks    |
-| SEO types       | **schema-dts**                                              | Typed JSON-LD structured data |
-| Validation      | **Zod**                                                     | As needed                     |
-| Utilities       | **date-fns**, **lodash-es**                                 | As needed                     |
+This is a reference table of features I have already built in some projects,
+here are my go-to technologies and setup.
+
+| Layer           | Packages / services                                      | When                          |
+| --------------- | -------------------------------------------------------- | ----------------------------- |
+| Database        | **PostgreSQL** + **Prisma** (`@prisma/adapter-pg`, `pg`) | Persistent data               |
+| Email           | **Nodemailer** + Maildev in Docker                       | Forms, transactional email    |
+| Payments        | **Stripe** + `@stripe/stripe-js`                         | Checkout                      |
+| Invoicing       | **SuperFaktura** + my own `superfaktura-library`         | Post-purchase invoicing       |
+| Analytics       | **Umami** (Docker locally; env in prod)                  | Privacy-friendly analytics    |
+| Background jobs | **vite-node** + `worker.ts` always-on worker             | Async email/files/webhooks    |
+| SEO types       | **schema-dts**                                           | Typed JSON-LD structured data |
+| Validation      | **Zod**                                                  | As needed                     |
+| Utilities       | **date-fns**, **lodash-es**                              | As needed                     |
 
 ---
 
 ## 2. Repository layout
 
-Generic skeleton. Add `lib/` subfolders and routes only for features the project
+This is a generic skeleton. Add `lib/` subfolders and routes only for features the project
 uses. Files marked _(optional)_ are not in this repo; add them with the recipes below.
 
 ```
@@ -74,7 +79,7 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 │   ├── environment.json        # cloud install + Docker
 │   ├── install.sh              # cloud: nvm + pnpm install
 │   └── Dockerfile              # cloud VM image
-├── .github/workflows/ci.yml
+├── .github/workflows/ci.yml    # CI
 ├── prisma/                     # (optional) schema.prisma + migrations
 ├── src/
 │   ├── app.css                 # Tailwind @theme + base styles
@@ -85,14 +90,14 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 │   ├── generated/prisma/       # (optional) gitignored Prisma client output
 │   ├── lib/
 │   │   ├── assets/
-│   │   ├── components/         # atoms / layout / organisms as needed
+│   │   ├── components/         # atoms / layout / molecules / organisms as needed
 │   │   ├── db/                 # (optional) prisma client wrapper (*.server.ts)
-│   │   └── …                   # feature modules (*.server.ts for server-only)
+│   │   └── …                   # additional feature modules
 │   └── routes/                 # SvelteKit file-based routing
 ├── static/
-├── tmp/                        # local data volume (gitignored)
-├── BRAND.md                    # brand voice, audience, mood (English)
-├── DESIGN.md                   # visual system: tokens, components, a11y (English)
+├── tmp/
+├── BRAND.md                    # brand voice, audience, mood
+├── DESIGN.md                   # visual system: tokens, components, a11y
 ├── docker-compose.yml          # (optional) local services
 ├── .env.example
 ├── eslint.config.mjs
@@ -102,7 +107,7 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 ├── svelte.config.js
 ├── tsconfig.json
 ├── vite.config.ts
-├── README.md                   # describes this repo (humans)
+├── README.md                   # describes this repo
 └── TEMPLATE.md                 # this file (the recipe book)
 ```
 
@@ -124,7 +129,7 @@ Use this repository as the starting point (clone/copy), or scaffold fresh and
 copy the config files. Install dependencies using **latest available versions**;
 add only what the target project needs.
 
-**Core installs** (already in this repo's `package.json`; see it for exact versions):
+**Core installs** (already in this repo's `package.json`):
 
 - `@sveltejs/adapter-node`, `@sveltejs/kit`, `svelte`, `vite`,
   `@sveltejs/vite-plugin-svelte`, `@sveltejs/enhanced-img`
@@ -139,26 +144,26 @@ add only what the target project needs.
 **Optional installs** (add when scoped for that site): `prisma`, `@prisma/client`,
 `@prisma/adapter-pg`, `pg`, `dotenv` (database); `nodemailer` (email); `stripe`,
 `@stripe/stripe-js` (payments); `vite-node` (worker); `schema-dts` (JSON-LD types);
-`zod`, `date-fns`, `lodash-es`, `@fontsource/*`.
+`zod`, `date-fns`, `lodash-es`, `@fontsource/*`, `superfaktura-library` (invoicing).
 
 ### 3.2 Root config files
 
 These are present in the repo and are the source of truth. Copy patterns,
 adjust values:
 
-| File                  | In repo | Notes                                                                                     |
-| --------------------- | ------- | ----------------------------------------------------------------------------------------- |
-| `.nvmrc`              | ✓       | `24`                                                                                      |
-| `.npmrc`              | ✓       | `engine-strict=true`                                                                      |
-| `.editorconfig`       | ✓       | utf-8, LF, 2-space indent, trim trailing WS, final newline, max line 80                   |
-| `.gitignore`          | ✓       | `node_modules`, `.svelte-kit`, `build`, `.env*`, `tmp/` (add `src/generated` with Prisma) |
-| `.prettierignore`     | ✓       | `pnpm-lock.yaml`, asset dirs                                                              |
-| `prettier.config.mjs` | ✓       | see file (single quotes, 80 cols, svelte/tailwind/organize-imports plugins)               |
-| `eslint.config.mjs`   | ✓       | flat config: js + ts + svelte + prettier                                                  |
-| `pnpm-workspace.yaml` | ✓       | `allowBuilds` for esbuild/sharp/lefthook (add `prisma`/`@prisma/engines` with Prisma)     |
-| `tsconfig.json`       | ✓       | extends `.svelte-kit/tsconfig.json`, `strict`, `moduleResolution: bundler`                |
-| `svelte.config.js`    | ✓       | `adapter-node` + `vitePreprocess` (see file)                                              |
-| `vite.config.ts`      | ✓       | `enhancedImages()`, `sveltekit()`, `tailwindcss()` (see file)                             |
+| File                  | In repo | Notes                                                         |
+| --------------------- | ------- | ------------------------------------------------------------- |
+| `.nvmrc`              | ✓       | `24`                                                          |
+| `.npmrc`              | ✓       | `engine-strict=true`                                          |
+| `.editorconfig`       | ✓       | copy file                                                     |
+| `.gitignore`          | ✓       | copy file (add `src/generated` with Prisma)                   |
+| `.prettierignore`     | ✓       | `pnpm-lock.yaml`, asset dirs                                  |
+| `prettier.config.mjs` | ✓       | copy file                                                     |
+| `eslint.config.mjs`   | ✓       | flat config: js + ts + svelte + prettier                      |
+| `pnpm-workspace.yaml` | ✓       | `allowBuilds` for dependencies                                |
+| `tsconfig.json`       | ✓       | copy file                                                     |
+| `svelte.config.js`    | ✓       | `adapter-node` + `vitePreprocess` (see file)                  |
+| `vite.config.ts`      | ✓       | `enhancedImages()`, `sveltekit()`, `tailwindcss()` (see file) |
 
 **`package.json` scripts.** See [`package.json`](./package.json) for the live set.
 Core scripts: `prepare` (`svelte-kit sync; lefthook install || true`), `sync`,
@@ -211,7 +216,8 @@ datasource db {
 
 ### 3.3 Docker Compose (local services) _(optional)_
 
-Add a `docker-compose.yml` only when the project uses local services. Standard trio:
+Add a `docker-compose.yml` when the project uses local services.
+This is useful for quickly starting the whole project stack. Standard trio:
 
 1. **postgres:16**. App DB (healthcheck via `pg_isready`)
 2. **maildev**. SMTP capture (if sending email)
@@ -257,13 +263,14 @@ volumes:
   postgres_data:
 ```
 
-(Umami needs its own database. Create it via a Postgres init config, e.g. a
-`configs:` entry that runs `CREATE DATABASE umami;`.)
+Note: Umami needs its own database. Create it via a Postgres init config, e.g. a
+`configs:` entry that runs `CREATE DATABASE umami;`.
 
 ### 3.4 Environment variables
 
-Pattern: **every** `$env/static/*` import must exist at build time. Document all
-keys in [`.env.example`](./.env.example) with placeholders (never empty strings).
+Pattern: **every** `$env/static/*` import must exist at build time. This is how
+SvelteKit works. Document all keys in [`.env.example`](./.env.example)
+with placeholders (never empty strings).
 
 Do not list env vars in the README. Point to `.env.example`, where keys are
 explained by comments.
@@ -282,7 +289,7 @@ Single source of truth for humans (agents also read it). See [`README.md`](./REA
 6. Script reference table
 7. External integrations (only those used)
 8. Pointers to `BRAND.md` and `DESIGN.md`
-9. Language policy (site copy vs code/docs)
+9. Language policy (site copy vs code/docs, if the project uses a different language than English)
 
 ### 3.6 Railway deployment
 
@@ -293,8 +300,7 @@ All projects deploy on **Railway**:
 - Attach Railway Postgres (if using a DB)
 - Set all env vars from `.env.example` in the Railway dashboard
 - Optional second Railway service for `pnpm start-worker` when using background jobs
-- Preview deploys use `*.up.railway.app`, which the
-  [`src/hooks.server.ts`](./src/hooks.server.ts) redirect rules account for
+- Preview deploys use `*.up.railway.app`, which the [`src/hooks.server.ts`](./src/hooks.server.ts) redirect rules account for
 
 ---
 
@@ -303,9 +309,8 @@ All projects deploy on **Railway**:
 ### 4.1 Layout shell
 
 [`src/routes/+layout.svelte`](./src/routes/+layout.svelte): imports `app.css`; a
-global `header / main / footer` grid (`grid min-h-dvh grid-cols-1
-grid-rows-[auto_1fr_auto]`). Mount client-only widgets (`*.client.svelte`) here for
-analytics or third-party scripts.
+global `header / main / footer` grid (`grid min-h-dvh grid-cols-1 grid-rows-[auto_1fr_auto]`).
+Mount client-only widgets (`*.client.svelte`) here for analytics or third-party scripts.
 
 ### 4.2 Styling
 
@@ -331,7 +336,7 @@ Keep the project's `DESIGN.md` in sync with `@theme`.
 Tiered folders (`atoms/`, `molecules/`, `layout/`, `organisms/`) as complexity
 grows. The base template ships only `organisms/header.svelte` and
 `organisms/footer.svelte` for the shell. Document component contracts and page
-composition in the project's `DESIGN.md`.
+composition concisely in the project's `DESIGN.md`.
 
 ### 4.4 Routes
 
@@ -340,7 +345,7 @@ SvelteKit conventions: static pages in `+page.svelte`; forms and data in
 separate routes; dynamic segments via `[param]`. SEO endpoints live at
 [`src/routes/robots.txt/+server.ts`](./src/routes/robots.txt/+server.ts) and
 [`src/routes/sitemap.xml/+server.ts`](./src/routes/sitemap.xml/+server.ts) (using
-`super-sitemap`; add `paramValues`/`excludeRoutePatterns` as routes grow).
+`super-sitemap`; see the files for reference and copy them).
 
 ### 4.5 Server hooks
 
@@ -361,14 +366,14 @@ const adapter = new PrismaPg({ connectionString: DATABASE_URL });
 export default new PrismaClient({ adapter });
 ```
 
-Remember to gitignore `src/generated` and add `prisma generate` to the `prepare`
-script (§3.2).
+Remember to gitignore `src/generated` and add `prisma generate`
+to the `prepare` script (§3.2).
 
 ### 4.7 Background jobs _(optional)_
 
 Web requests enqueue DB rows; a separate `pnpm start-worker` process drains them.
-The reference implementation uses Postgres `LISTEN/NOTIFY`, `FOR UPDATE SKIP
-LOCKED`, retries, and job dependencies. Adopt this pattern or simplify per project.
+The reference implementation uses Postgres `LISTEN/NOTIFY`, `FOR UPDATE SKIP LOCKED`,
+retries, and job dependencies. Adopt this pattern or simplify per project.
 The worker is a `vite-node` entry (`src/cli/worker.ts`) launched via
 `scripts/start-worker.sh`:
 
@@ -386,10 +391,12 @@ On Railway, set the worker service start command to `sh scripts/start-worker.sh`
 
 ### 4.8 Integrations _(optional)_
 
-- **Email:** Nodemailer + `lib/email/*.server.ts`.
+- **Email:** Nodemailer + `lib/email/*.server.ts`. Note: later we plan to migrate to
+  [Resend](https://resend.com/emails), so new projects might already start with that.
 - **Stripe:** server client + webhook route; never process purchases inline in the
-  request handler.
+  request handler. Instead enqueue for the worker.
 - **Analytics:** Umami via a `*.client.svelte` widget and `PUBLIC_UMAMI_*` env vars.
+  Note that I already host a single Umami instance on Railway for all my projects.
 
 ### 4.9 Language split
 
@@ -398,7 +405,8 @@ On Railway, set the worker service start command to `sh scripts/start-worker.sh`
 | User-facing copy in `src/`  | Site locale |
 | Code, README, docs, AI chat | English     |
 
-Encode in [`.cursor/rules/agent.mdc`](./.cursor/rules/agent.mdc).
+Encode in [`.cursor/rules/agent.mdc`](./.cursor/rules/agent.mdc). This is only relevant
+for projects which are not entirely in English and use a different language for user-facing copy.
 
 ---
 
@@ -428,14 +436,14 @@ on `pre-push`. Installed via `pnpm install` → `prepare` script.
 ### CI
 
 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs four parallel jobs on
-push and PR: `check`, `lint`, `format`, `build`. Node 24, `pnpm install
---frozen-lockfile`. When the app imports `$env/static/*` keys, add an `env:` block
+push and PR: `check`, `lint`, `format`, `build`. Node 24, `pnpm install --frozen-lockfile`.
+When the app imports `$env/static/*` keys, add an `env:` block
 injecting a placeholder for **every** key (mirror `.env.example`), for example:
 
 ```yaml
 env:
   DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ci
-  PUBLIC_UMAMI_URL: auto
+  PUBLIC_UMAMI_URL: placeholder
 ```
 
 ### Cloud agent ([`.cursor/rules/cloud.mdc`](./.cursor/rules/cloud.mdc))
@@ -445,12 +453,14 @@ env:
 - Non-interactive migrations: `prisma migrate dev --name <snake_case> --create-only`
   then `pnpm db:migrate:deploy` (only if using Prisma)
 - Autonomous: feature branches, open PR, run full verification gate, `git-commit-style` skill
+- See the file for the full reference
 
 ### Local agent ([`.cursor/rules/local.mdc`](./.cursor/rules/local.mdc))
 
 - Do not commit unless asked
 - Discuss before large changes
 - Human in the loop
+- See the file for the full reference
 
 ---
 
@@ -470,9 +480,8 @@ high-level visual personality (not tokens), and the tiebreaker rule.
 ### `DESIGN.md`: the how
 
 Color palette and `@theme` token table, typography (families, fluid base size,
-text-role catalog), layout primitives and composition, component contracts, focus/
-motion/imagery/a11y rules, and the mapping from tokens → `src/app.css` and Tailwind
-classes.
+text-role catalog), layout primitives and composition, component contracts,
+and focus/motion/imagery/a11y rules.
 
 **Rules:**
 
@@ -488,8 +497,7 @@ classes.
 
 Three rules, generalized in this repo:
 
-- [`agent.mdc`](./.cursor/rules/agent.mdc) is the universal rule: read README first,
-  verification commands, language policy, minimal diffs, and pointers to `BRAND.md`/`DESIGN.md`
+- [`agent.mdc`](./.cursor/rules/agent.mdc) contains universal rules and instructions, always applied, project-specific
 - [`cloud.mdc`](./.cursor/rules/cloud.mdc) is the autonomous cloud workflow (metadata: `environments: cloud`)
 - [`local.mdc`](./.cursor/rules/local.mdc) is the collaborative local workflow (metadata: `environments: local`)
 
@@ -512,26 +520,26 @@ Reused in every project:
 - [`.cursor/install.sh`](./.cursor/install.sh) runs `nvm install`,
   `corepack prepare --activate`, and `pnpm install --frozen-lockfile`
 - [`.cursor/Dockerfile`](./.cursor/Dockerfile) provides Ubuntu + Docker + NVM Node 24
-  and installs agentfiles
+  and installs my agentfiles
 
 ---
 
 ## 8. Per-project customization matrix
 
-| Area                     | Keep same everywhere              | Customize per project         |
-| ------------------------ | --------------------------------- | ----------------------------- |
-| Core stack & tooling     | ✓                                 | —                             |
-| Config file patterns     | ✓                                 | —                             |
-| CI / lefthook / scripts  | ✓                                 | add worker/db scripts if used |
-| `.cursor/` cloud setup   | ✓                                 | skills/agents per project     |
-| Railway deployment       | ✓                                 | env vars, services count      |
-| `BRAND.md` + `DESIGN.md` | two-file pattern at repo root     | all content and tokens        |
-| `src/lib/components/`    | naming conventions                | which components exist        |
-| `prisma/schema.prisma`   | generator output path, PostgreSQL | models (optional feature)     |
-| `src/routes/`            | SvelteKit conventions             | pages and APIs                |
-| `docker-compose.yml`     | pattern                           | which services (optional)     |
-| `.env.example`           | pattern                           | keys for integrations in use  |
-| Site copy language       | policy (split from code)          | target locale and grammar     |
+| Area                     | Keep same everywhere              | Customize per project                |
+| ------------------------ | --------------------------------- | ------------------------------------ |
+| Core stack & tooling     | ✓                                 | —                                    |
+| Config file patterns     | ✓                                 | —                                    |
+| CI / lefthook / scripts  | ✓                                 | add worker/db scripts if used        |
+| `.cursor/` cloud setup   | ✓                                 | skills/agents per project            |
+| Railway deployment       | ✓                                 | env vars, services count             |
+| `BRAND.md` + `DESIGN.md` | two-file pattern at repo root     | all content and tokens               |
+| `src/lib/components/`    | naming conventions                | which components exist               |
+| `prisma/schema.prisma`   | generator output path, PostgreSQL | models (optional feature)            |
+| `src/routes/`            | SvelteKit conventions             | pages and APIs                       |
+| `docker-compose.yml`     | pattern                           | which services (optional)            |
+| `.env.example`           | pattern                           | keys for integrations in use         |
+| Site copy language       | policy (split from code)          | target locale and grammar, if needed |
 
 ---
 
@@ -542,7 +550,7 @@ Bootstrap a new website using the SvelteKit project template (this repo).
 
 Site: [name, domain, one-line purpose]
 Audience: [who]
-Locale: [language + grammar rules for src/ copy]
+Locale: [language + grammar rules for src/ copy, or just all English]
 Brand mood: [3–5 adjectives]
 Palette: [surface + accent hex values]
 Fonts: [body, heading, accent]
@@ -586,9 +594,9 @@ Do not copy data models, routes, or components from reference repos unless liste
 
 - Shared npm package / monorepo across sites
 - Published component library (each site owns its components)
-- Prescribed data models or business logic from reference repos
+- Prescribed data models or business logic
 - CMS (unless a specific project needs one)
-- E2E test suite in the default bootstrap (add later if needed)
-- Edge/serverless deploy (Railway + adapter-node is the default)
+- E2E test suite (add later if needed)
+- Edge/serverless deploy (Railway + adapter-node is my go-to)
 
 Add these only when a specific project requires them.
