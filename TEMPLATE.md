@@ -460,21 +460,9 @@ env:
   PUBLIC_UMAMI_URL: placeholder
 ```
 
-### Cloud agent ([`.cursor/rules/cloud.mdc`](./.cursor/rules/cloud.mdc))
+### Cursor agent workflow
 
-- No `.env` files; secrets come from the Cursor dashboard
-- Start the Docker daemon before compose (only if the project uses services)
-- Non-interactive migrations: `prisma migrate dev --name <snake_case> --create-only`
-  then `pnpm db:migrate:deploy` (only if using Prisma)
-- Autonomous: feature branches, open PR, run full verification gate, `git-commit-style` skill
-- See the file for the full reference
-
-### Local agent ([`.cursor/rules/local.mdc`](./.cursor/rules/local.mdc))
-
-- Do not commit unless asked
-- Discuss before large changes
-- Human in the loop
-- See the file for the full reference
+See [§7.1](#71-rules-always-applied).
 
 ---
 
@@ -514,6 +502,9 @@ Three rules, generalized in this repo:
 - [`agent.mdc`](./.cursor/rules/agent.mdc) contains universal rules and instructions, always applied, project-specific
 - [`cloud.mdc`](./.cursor/rules/cloud.mdc) is the autonomous cloud workflow (metadata: `environments: cloud`)
 - [`local.mdc`](./.cursor/rules/local.mdc) is the collaborative local workflow (metadata: `environments: local`)
+
+General local/cloud behavior is in global user rules at `~/.cursor/rules/`
+(the repo files point to the relevant ones).
 
 ### 7.2 Skills
 
