@@ -331,6 +331,20 @@ Tailwind import and repoint the `--font-*` tokens, e.g.:
 
 Keep the project's `DESIGN.md` in sync with `@theme`.
 
+If the project is using separate light and dark mode colors, utilize modern CSS (`light-dark()`):
+
+```css
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  /* example colors */
+  color: light-dark(#333b3c, #efefec);
+  background-color: light-dark(#efedea, #223a2c);
+}
+```
+
 ### 4.3 Components
 
 Tiered folders (`atoms/`, `molecules/`, `layout/`, `organisms/`) as complexity
