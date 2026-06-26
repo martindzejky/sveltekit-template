@@ -33,6 +33,10 @@ prompt template in [`TEMPLATE.md` §9](./TEMPLATE.md). Fill in the project speci
 (name, locale, brand, features, integrations) and let it scaffold a sibling project
 following the same conventions.
 
+**`TEMPLATE.md` stays in this repository only.** Agents should read it as the bootstrap
+recipe book but must not copy it into the new web project. Each project gets its own
+`README.md`, `BRAND.md`, and `DESIGN.md` instead.
+
 ## Running the dummy app
 
 ### Prerequisites

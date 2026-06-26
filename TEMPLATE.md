@@ -10,6 +10,11 @@ patterns below. It ships the **core** stack plus a minimal dummy app; the
 **optional** features are documented here but not installed. Copy the setup, not
 the dummy content.
 
+> **Template-repo only.** `TEMPLATE.md` belongs in `sveltekit-template` only.
+> When scaffolding a sibling project, read this file for context but **do not
+> copy** it into the new repo. The new project documents itself in `README.md`,
+> `BRAND.md`, and `DESIGN.md` instead.
+
 > **How to read this file.** Where a file already exists in this repo, this
 > document **points at the file** (the source of truth) and describes intent only.
 > Code is inlined **only for optional features that are not in the repo** (so you
@@ -128,6 +133,9 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 Use this repository as the starting point (clone/copy), or scaffold fresh and
 copy the config files. Install dependencies using **latest available versions**;
 add only what the target project needs.
+
+Do **not** copy `TEMPLATE.md` into the new project. It is the template-repo
+recipe book; agents read it from `sveltekit-template` when bootstrapping.
 
 **Core installs** (already in this repo's `package.json`):
 
@@ -531,20 +539,21 @@ Reused in every project:
 
 ## 8. Per-project customization matrix
 
-| Area                     | Keep same everywhere              | Customize per project                |
-| ------------------------ | --------------------------------- | ------------------------------------ |
-| Core stack & tooling     | ✓                                 | —                                    |
-| Config file patterns     | ✓                                 | —                                    |
-| CI / lefthook / scripts  | ✓                                 | add worker/db scripts if used        |
-| `.cursor/` cloud setup   | ✓                                 | skills/agents per project            |
-| Railway deployment       | ✓                                 | env vars, services count             |
-| `BRAND.md` + `DESIGN.md` | two-file pattern at repo root     | all content and tokens               |
-| `src/lib/components/`    | naming conventions                | which components exist               |
-| `prisma/schema.prisma`   | generator output path, PostgreSQL | models (optional feature)            |
-| `src/routes/`            | SvelteKit conventions             | pages and APIs                       |
-| `docker-compose.yml`     | pattern                           | which services (optional)            |
-| `.env.example`           | pattern                           | keys for integrations in use         |
-| Site copy language       | policy (split from code)          | target locale and grammar, if needed |
+| Area                     | Keep same everywhere              | Customize per project                 |
+| ------------------------ | --------------------------------- | ------------------------------------- |
+| Core stack & tooling     | ✓                                 | —                                     |
+| Config file patterns     | ✓                                 | —                                     |
+| CI / lefthook / scripts  | ✓                                 | add worker/db scripts if used         |
+| `.cursor/` cloud setup   | ✓                                 | skills/agents per project             |
+| Railway deployment       | ✓                                 | env vars, services count              |
+| `BRAND.md` + `DESIGN.md` | two-file pattern at repo root     | all content and tokens                |
+| `src/lib/components/`    | naming conventions                | which components exist                |
+| `prisma/schema.prisma`   | generator output path, PostgreSQL | models (optional feature)             |
+| `src/routes/`            | SvelteKit conventions             | pages and APIs                        |
+| `docker-compose.yml`     | pattern                           | which services (optional)             |
+| `.env.example`           | pattern                           | keys for integrations in use          |
+| Site copy language       | policy (split from code)          | target locale and grammar, if needed  |
+| `TEMPLATE.md`            | template repo only                | do not copy — use project `README.md` |
 
 ---
 
@@ -574,6 +583,7 @@ Deliver:
 8. pnpm fix && pnpm check && pnpm build passing
 
 Use latest package versions. Install only dependencies required for listed features.
+Do not copy TEMPLATE.md into the new repo (read it from sveltekit-template only).
 Do not copy data models, routes, or components from reference repos unless listed.
 ```
 
