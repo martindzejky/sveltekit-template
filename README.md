@@ -37,6 +37,11 @@ following the same conventions.
 recipe book but must not copy it into the new web project. Each project gets its own
 `README.md`, `BRAND.md`, and `DESIGN.md` instead.
 
+After copying or referencing files from this repo, replace template-style placeholders
+and template-repo wording (e.g. in `.env.example`, `.cursor/rules`, comments) with
+values for the target project. Do not leave unfilled placeholders or descriptions
+that refer to this repository as a template.
+
 ## Running the dummy app
 
 ### Prerequisites

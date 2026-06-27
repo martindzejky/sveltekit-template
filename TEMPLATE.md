@@ -137,6 +137,13 @@ add only what the target project needs.
 Do **not** copy `TEMPLATE.md` into the new project. It is the template-repo
 recipe book; agents read it from `sveltekit-template` when bootstrapping.
 
+**Replace template placeholders.** After copying or referencing any file from
+this repo, adapt template-style placeholders and template-repo wording for the
+target project. Do not leave unfilled tokens (e.g. `<SITE_LOCALE>`), generic
+"insert here" instructions, or descriptions like "in this template there are no
+env vars". Fill `.env.example`, README, rules, and comments with the target
+project's actual integrations, locale, brand, and env keys.
+
 **Core installs** (already in this repo's `package.json`):
 
 - `@sveltejs/adapter-node`, `@sveltejs/kit`, `svelte`, `vite`,
@@ -585,6 +592,10 @@ Deliver:
 Use latest package versions. Install only dependencies required for listed features.
 Do not copy TEMPLATE.md into the new repo (read it from sveltekit-template only).
 Do not copy data models, routes, or components from reference repos unless listed.
+After copying or referencing any file from this template repo, replace template-style
+placeholders and template-repo descriptions (e.g. in .env.example, README.md,
+.cursor/rules) with target-project values. Do not leave unfilled <> placeholders
+or wording like "in this template…".
 ```
 
 ---
