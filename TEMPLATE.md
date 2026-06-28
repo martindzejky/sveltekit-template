@@ -82,7 +82,7 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 │   ├── skills/                 # task-specific agent skills (per project)
 │   ├── agents/                 # subagent definitions (per project)
 │   ├── environment.json        # cloud install + Docker
-│   ├── install.sh              # cloud: nvm + pnpm install
+│   ├── install.sh              # cloud: agentfiles refresh + nvm + pnpm install
 │   └── Dockerfile              # cloud VM image
 ├── .github/workflows/ci.yml    # CI
 ├── prisma/                     # (optional) schema.prisma + migrations
@@ -537,10 +537,11 @@ Reused in every project:
 
 - [`.cursor/environment.json`](./.cursor/environment.json) builds via the Dockerfile,
   starts Docker, and installs via `install.sh`
-- [`.cursor/install.sh`](./.cursor/install.sh) runs `nvm install`,
-  `corepack prepare --activate`, and `pnpm install --frozen-lockfile`
+- [`.cursor/install.sh`](./.cursor/install.sh) refreshes agentfiles from `origin/master`,
+  runs `~/.agentfiles/install`, then `nvm install`, `corepack prepare --activate`, and
+  `pnpm install --frozen-lockfile`
 - [`.cursor/Dockerfile`](./.cursor/Dockerfile) provides Ubuntu + Docker + NVM Node 24
-  and installs my agentfiles
+  and bakes in a baseline agentfiles copy (refreshed at runtime by `install.sh`)
 
 ---
 
