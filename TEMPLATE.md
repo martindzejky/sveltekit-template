@@ -10,7 +10,7 @@ patterns below. It ships the **core** stack plus a minimal dummy app; the
 **optional** features are documented here but not installed. Copy the setup, not
 the dummy content.
 
-> **Template-repo only.** `TEMPLATE.md` belongs in `sveltekit-template` only.
+> `TEMPLATE.md` file belongs in `sveltekit-template` only!
 > When scaffolding a sibling project, read this file for context but **do not
 > copy** it into the new repo. The new project documents itself in `README.md`,
 > `BRAND.md`, and `DESIGN.md` instead.
