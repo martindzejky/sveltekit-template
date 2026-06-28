@@ -5,13 +5,19 @@ alwaysApply: true
 
 # Agent instructions
 
-Read relevant global user rules in `~/.cursor/rules/`, especially the local/cloud rules
-for the current workflow, plus other files there when they apply (e.g. `prisma.mdc`,
-`tailwind.mdc`). All rule files have frontmatter with information about when it is relevant.
-
 **Read `README.md` first** for local setup, services, integrations, and reference docs.
 If docs and code disagree, trust code and update docs in the same change.
 If anything is unclear or instructions conflict, STOP and ask.
+
+## Global rules
+
+Cursor environment does not always automatically include my global user rules
+in your context (it is a known bug), especially in cloud environments. If you did not
+get those global user rules always included, read the frontmatter of all rule files
+in `~/.cursor/rules` and read in full those that are relevant to your context.
+
+Before starting, you must read the relevant global user rules in `~/.cursor/rules/`.
+All rule files have frontmatter with information about when it is relevant.
 
 ## Code and verification
 

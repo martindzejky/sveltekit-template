@@ -6,7 +6,12 @@ metadata:
   human: false
 ---
 
-Read global user rules first: `~/.cursor/rules/cloud-env.mdc`.
+Before starting, you must always read the global user rules for
+the cloud environment first, unless it has already been included in your
+context by Cursor. Read `~/.cursor/rules/cloud-env.mdc`. If the file is
+missing for some reason, warn the user explicitly. Treat it as part
+of the "always included" ruleset.
+
 **Setup and services:** follow **`README.md`**. Below is only what differs in the cloud environment.
 
 ## Environment
