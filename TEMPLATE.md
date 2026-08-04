@@ -535,13 +535,16 @@ shipped).
 
 Reused in every project:
 
-- [`.cursor/environment.json`](./.cursor/environment.json) builds via the Dockerfile,
-  starts Docker, and installs via `install.sh`
+- [`.cursor/environment.json`](./.cursor/environment.json) builds via the Dockerfile
+  as user `ubuntu`, starts Docker, installs via `install.sh`, and declares
+  `agentfiles` as a `repositoryDependencies` entry
 - [`.cursor/install.sh`](./.cursor/install.sh) refreshes agentfiles from `origin/master`,
   runs `~/.agentfiles/install`, then `nvm install`, `corepack prepare --activate`, and
   `pnpm install --frozen-lockfile`
 - [`.cursor/Dockerfile`](./.cursor/Dockerfile) provides Ubuntu + Docker + NVM Node 24
-  and bakes in a baseline agentfiles copy (refreshed at runtime by `install.sh`)
+  and `python3` (for agentfiles/dotbot), bakes in a baseline agentfiles copy (refreshed
+  at runtime by `install.sh`), and symlinks `/.cursor` → `/home/ubuntu/.cursor` so
+  Cursor's upward walk finds it
 
 ---
 

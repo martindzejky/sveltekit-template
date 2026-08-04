@@ -1,8 +1,9 @@
 {
   "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
+    "dockerfile": "Dockerfile"
   },
+  "user": "ubuntu",
   "start": "sudo service docker start",
-  "install": "sh .cursor/install.sh"
+  "install": "sh .cursor/install.sh",
+  "repositoryDependencies": ["https://github.com/martindzejky/agentfiles"]
 }
