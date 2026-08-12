@@ -3,7 +3,6 @@ description: Cloud agent, autonomous delivery
 alwaysApply: true
 metadata:
   environments: cloud
-  human: false
 ---
 
 **Setup and services:** follow **`README.md`**. Below is only what differs in the cloud environment.
