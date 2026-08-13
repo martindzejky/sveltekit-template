@@ -15,6 +15,7 @@ After you finish, run `pnpm fix` and `pnpm check` (and `pnpm build` when relevan
 Write simple, minimal code.
 Prefer existing patterns.
 Use `cva` (`class-variance-authority`) for Tailwind class variants on components.
+Always accept a `class` prop and merge it last with `cn()` from `$lib/cn`.
 See `src/lib/components/atoms/button.svelte`.
 Good accessibility is required.
 Do not add unrequested features or APIs.

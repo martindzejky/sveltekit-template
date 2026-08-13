@@ -16,7 +16,7 @@ project when needed.
 
 - **SvelteKit** + **Svelte 5** + **Vite**, deployed on **Railway** via `@sveltejs/adapter-node`
 - **Tailwind CSS v4** (`@tailwindcss/vite` + `@theme` tokens)
-- **CVA** (`class-variance-authority`) for type-safe Tailwind variants
+- **CVA** (`class-variance-authority`) + `cn()` (`clsx` + `tailwind-merge`) for variant classes
 - `@sveltejs/enhanced-img` for images, `@lucide/svelte` for icons
 - **TypeScript**, **ESLint** (flat config) + **Prettier**, **lefthook** git hooks
 - **super-sitemap** + `robots.txt` / `sitemap.xml` routes

@@ -39,7 +39,7 @@ template.
 | Build              | **Vite**                                                                       | ✓                       |
 | Deploy             | **Railway** with **`@sveltejs/adapter-node`**                                  | ✓                       |
 | CSS                | **Tailwind CSS v4** via `@tailwindcss/vite` + `@theme` tokens in `src/app.css` | ✓                       |
-| Variants           | **CVA** (`class-variance-authority`) for type-safe Tailwind class variants     | ✓                       |
+| Variants           | **CVA** + `cn()` (`clsx` + `tailwind-merge`) for type-safe Tailwind variants   | ✓                       |
 | Images             | **`@sveltejs/enhanced-img`**                                                   | ✓                       |
 | Icons              | **`@lucide/svelte`**                                                           | ✓                       |
 | Fonts              | **`@fontsource/*`** fonts as needed                                            | system stack by default |
@@ -95,6 +95,7 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 │   ├── error.html
 │   ├── generated/prisma/       # (optional) gitignored Prisma client output
 │   ├── lib/
+│   │   ├── cn.ts               # twMerge(clsx(...)) class helper
 │   │   ├── assets/
 │   │   ├── components/
 │   │   │   ├── atoms/          # button.svelte (CVA reference)
@@ -152,7 +153,7 @@ project's actual integrations, locale, brand, and env keys.
 - `@sveltejs/adapter-node`, `@sveltejs/kit`, `svelte`, `vite`,
   `@sveltejs/vite-plugin-svelte`, `@sveltejs/enhanced-img`
 - `@tailwindcss/vite`, `tailwindcss`
-- `class-variance-authority` (CVA)
+- `class-variance-authority` (CVA), `clsx`, `tailwind-merge`
 - `@lucide/svelte`, `super-sitemap`
 - Dev: `eslint`, `@eslint/js`, `@eslint/compat`, `eslint-plugin-svelte`,
   `eslint-config-prettier`, `typescript-eslint`, `globals`, `prettier`,
@@ -177,8 +178,8 @@ adjust values:
 | `.editorconfig`         | ✓       | copy file                                                     |
 | `.gitignore`            | ✓       | copy file (add `src/generated` with Prisma)                   |
 | `.prettierignore`       | ✓       | `pnpm-lock.yaml`, asset dirs                                  |
-| `prettier.config.mjs`   | ✓       | copy file (`tailwindFunctions`: `cva`, `cx`)                  |
-| `.vscode/settings.json` | ✓       | Tailwind IntelliSense for `cva`/`cx`                          |
+| `prettier.config.mjs`   | ✓       | copy file (`tailwindFunctions`: `cn`, `cva`)                  |
+| `.vscode/settings.json` | ✓       | Tailwind IntelliSense for `cn`/`cva`                          |
 | `eslint.config.mjs`     | ✓       | flat config: js + ts + svelte + prettier                      |
 | `pnpm-workspace.yaml`   | ✓       | `allowBuilds` for dependencies                                |
 | `tsconfig.json`         | ✓       | copy file                                                     |
@@ -352,13 +353,16 @@ Tailwind import and repoint the `--font-*` tokens, e.g.:
 Keep the project's `DESIGN.md` in sync with `@theme`.
 
 **Variant classes.** Use [CVA](https://cva.style) (`class-variance-authority`) for
-components that have visual variants (intent, size, and similar). The dummy app's
+components that have visual variants (intent, size, and similar). Merge extra
+classes with [`cn()`](./src/lib/cn.ts) (`twMerge(clsx(...))`) so a parent `class`
+can override utilities without conflicts. The dummy app's
 [`button.svelte`](./src/lib/components/atoms/button.svelte) is the canonical example:
-define `cva()` in a `<script module>`, type props with `VariantProps`, and pass extra
-classes through the `class` argument.
+define `cva()` in a `<script module>`, type props with `VariantProps`, accept a
+`class` prop, and merge it last.
 
 ```ts
 import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '$lib/cn';
 
 const button = cva('inline-flex items-center rounded-md font-medium', {
   variants: {
@@ -374,19 +378,19 @@ const button = cva('inline-flex items-center rounded-md font-medium', {
 
 type ButtonVariants = VariantProps<typeof button>;
 
-button(); // default variants
-button({ intent: 'secondary' });
-button({ intent: 'primary', class: extraClasses });
+cn(button({ intent: 'secondary' }), className);
 ```
 
 - `cva` is for varianted UI. Leave one-off layout classes inline on the element.
-- Use `cx` (CVA's `clsx` alias) when you only need to concatenate classes.
+- Always accept `class` on reusable components and merge last:
+  `class={cn(buttonVariants({ intent }), className)}`.
 - `compoundVariants` apply classes when several variants match. See the
   [CVA docs](https://cva.style/docs/getting-started/variants).
-- Enable Tailwind IntelliSense inside `cva`/`cx` via `.vscode/settings.json`
+- Enable Tailwind IntelliSense inside `cn`/`cva` via `.vscode/settings.json`
   (`tailwindCSS.classFunctions`). Prettier sorts those calls via `tailwindFunctions`.
-- Optional: wrap with [`tailwind-merge`](https://github.com/dcastil/tailwind-merge) if
-  conflicting utilities become a problem. Skip it until you need it.
+- Share repeated class clusters that are not already global in `app.css` as small
+  string exports (for example a per-component focus ring). This template's keyboard
+  focus outline is global, so do not duplicate it on every component.
 - Install the stable `class-variance-authority` package (0.x). The npm package named
   `cva` is the 1.0 beta; do not use it until it is stable.
 

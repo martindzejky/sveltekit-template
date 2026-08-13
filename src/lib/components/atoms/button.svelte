@@ -25,6 +25,7 @@
 </script>
 
 <script lang="ts">
+  import { cn } from '$lib/cn';
   import type { Snippet } from 'svelte';
   import type {
     ClassValue,
@@ -51,11 +52,11 @@
 </script>
 
 {#if href}
-  <a {href} class={buttonVariants({ intent, class: className })} {...rest}>
+  <a {href} class={cn(buttonVariants({ intent }), className)} {...rest}>
     {@render children()}
   </a>
 {:else}
-  <button {type} class={buttonVariants({ intent, class: className })} {...rest}>
+  <button {type} class={cn(buttonVariants({ intent }), className)} {...rest}>
     {@render children()}
   </button>
 {/if}
