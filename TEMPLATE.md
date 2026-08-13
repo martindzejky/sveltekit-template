@@ -80,7 +80,7 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 .
 ├── .cursor/
 │   ├── rules/                  # always-applied agent rules (agent/cloud/local)
-│   ├── skills/                 # task-specific agent skills (per project)
+│   ├── skills/                 # tailwind-cva (plus per-project skills)
 │   ├── agents/                 # subagent definitions (per project)
 │   ├── environment.json        # cloud install + Docker
 │   ├── install.sh              # cloud: agentfiles refresh + nvm + pnpm install
@@ -352,13 +352,23 @@ Tailwind import and repoint the `--font-*` tokens, e.g.:
 
 Keep the project's `DESIGN.md` in sync with `@theme`.
 
-**Variant classes.** Use [CVA](https://cva.style) (`class-variance-authority`) for
-components that have visual variants (intent, size, and similar). Merge extra
-classes with [`cn()`](./src/lib/cn.ts) (`twMerge(clsx(...))`) so a parent `class`
-can override utilities without conflicts. The dummy app's
-[`button.svelte`](./src/lib/components/atoms/button.svelte) is the canonical example:
-define `cva()` in a `<script module>`, type props with `VariantProps`, accept a
-`class` prop, and merge it last.
+**Variant classes.** Stop building class strings with ternaries. Use
+[`cn()`](./src/lib/cn.ts) and [CVA](https://cva.style) instead. See
+[`.cursor/skills/tailwind-cva/SKILL.md`](./.cursor/skills/tailwind-cva/SKILL.md).
+
+Pick the smallest tool:
+
+- Static `class="..."` for one-off layout and copy.
+- `cn()` for conditionals, and when a `class` prop might collide with existing
+  utilities (`p-2` vs `p-4`).
+- `cva()` for reusable components with named variants (intent, size).
+
+Svelte 5 `class={[...]}` uses clsx, not `tailwind-merge`. Use `cn()` when
+utilities can conflict.
+
+The dummy app's [`button.svelte`](./src/lib/components/atoms/button.svelte) is
+the canonical `cva` example: define it in a `<script module>`, type props with
+`VariantProps`, accept a `class` prop, and merge last.
 
 ```ts
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -378,19 +388,24 @@ const button = cva('inline-flex items-center rounded-md font-medium', {
 
 type ButtonVariants = VariantProps<typeof button>;
 
-cn(button({ intent: 'secondary' }), className);
+// base → variants → state → consumer class
+cn(button({ intent: 'secondary' }), isPending && 'opacity-70', className);
 ```
 
-- `cva` is for varianted UI. Leave one-off layout classes inline on the element.
-- Always accept `class` on reusable components and merge last:
-  `class={cn(buttonVariants({ intent }), className)}`.
+```svelte
+class={cn(buttonVariants({ intent }), className)}
+```
+
+- Do not concatenate Tailwind names (`bg-${color}-500`). The compiler drops them.
+- Do not use `cva` for a single boolean. `cn('base', open && 'translate-x-0')`
+  is enough.
 - `compoundVariants` apply classes when several variants match. See the
   [CVA docs](https://cva.style/docs/getting-started/variants).
 - Enable Tailwind IntelliSense inside `cn`/`cva` via `.vscode/settings.json`
   (`tailwindCSS.classFunctions`). Prettier sorts those calls via `tailwindFunctions`.
 - Share repeated class clusters that are not already global in `app.css` as small
-  string exports (for example a per-component focus ring). This template's keyboard
-  focus outline is global, so do not duplicate it on every component.
+  string exports. This template's keyboard focus outline is global, so do not
+  duplicate it on every component.
 - Install the stable `class-variance-authority` package (0.x). The npm package named
   `cva` is the 1.0 beta; do not use it until it is stable.
 
@@ -571,8 +586,10 @@ General local/cloud behavior is in global user rules at `~/.cursor/rules/`
 
 ### 7.2 Skills
 
-Task-specific skills go in **`.cursor/skills/<skill-name>/SKILL.md`** (per project;
-none shipped).
+Task-specific skills go in **`.cursor/skills/<skill-name>/SKILL.md`**.
+
+This template ships [`.cursor/skills/tailwind-cva/SKILL.md`](./.cursor/skills/tailwind-cva/SKILL.md)
+(when to use static classes vs `cn()` vs `cva`). Add more skills per project as needed.
 
 ### 7.3 Subagents
 

@@ -3,7 +3,9 @@
 
   export const buttonVariants = cva(
     [
-      'inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 font-medium transition',
+      'inline-flex items-center justify-center gap-2',
+      'h-10 rounded-md px-4 font-medium transition',
+      'disabled:pointer-events-none disabled:opacity-50',
       'motion-safe:hover:scale-105 motion-safe:active:scale-95',
     ],
     {
