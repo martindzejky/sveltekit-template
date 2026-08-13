@@ -17,7 +17,8 @@
     "fix": "pnpm format:fix; pnpm lint:fix"
   },
   "dependencies": {
-    "@lucide/svelte": "^0.564.0"
+    "@lucide/svelte": "^0.564.0",
+    "class-variance-authority": "^0.7.1"
   },
   "devDependencies": {
     "@eslint/compat": "^2.0.5",

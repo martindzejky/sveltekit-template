@@ -13,7 +13,7 @@ export default {
     'prettier-plugin-organize-imports',
   ],
 
-  tailwindFunctions: ['clsx'],
+  tailwindFunctions: ['cva', 'cx'],
   tailwindStylesheet: './src/app.css',
 
   overrides: [

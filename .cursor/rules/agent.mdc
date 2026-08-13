@@ -14,6 +14,8 @@ If anything is unclear or instructions conflict, STOP and ask.
 After you finish, run `pnpm fix` and `pnpm check` (and `pnpm build` when relevant).
 Write simple, minimal code.
 Prefer existing patterns.
+Use `cva` (`class-variance-authority`) for Tailwind class variants on components.
+See `src/lib/components/atoms/button.svelte`.
 Good accessibility is required.
 Do not add unrequested features or APIs.
 Store temporary artifacts in `tmp/`, not the repo root.
