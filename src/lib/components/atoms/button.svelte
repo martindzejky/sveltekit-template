@@ -28,37 +28,26 @@
 
 <script lang="ts">
   import { cn } from '$lib/cn';
-  import type { Snippet } from 'svelte';
   import type {
-    ClassValue,
     HTMLAnchorAttributes,
     HTMLButtonAttributes,
   } from 'svelte/elements';
 
-  type Props = ButtonVariants & {
-    href?: string;
-    class?: ClassValue;
-    children: Snippet;
-    type?: HTMLButtonAttributes['type'];
-  } & Omit<HTMLAnchorAttributes, 'class' | 'href'> &
-    Omit<HTMLButtonAttributes, 'class' | 'href' | 'type'>;
+  type Props = ButtonVariants &
+    Omit<HTMLButtonAttributes, 'href'> &
+    Omit<HTMLAnchorAttributes, 'href'> & {
+      href?: string;
+    };
 
-  let {
-    intent,
-    href,
-    class: className,
-    children,
-    type = 'button',
-    ...rest
-  }: Props = $props();
+  let { intent, href, children, type = 'button', ...rest }: Props = $props();
 </script>
 
 {#if href}
-  <a {href} class={cn(buttonVariants({ intent }), className)} {...rest}>
-    {@render children()}
+  <a {href} {...rest} class={cn(buttonVariants({ intent }), rest.class)}>
+    {@render children?.()}
   </a>
 {:else}
-  <button {type} class={cn(buttonVariants({ intent }), className)} {...rest}>
-    {@render children()}
+  <button {type} {...rest} class={cn(buttonVariants({ intent }), rest.class)}>
+    {@render children?.()}
   </button>
 {/if}

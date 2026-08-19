@@ -359,46 +359,41 @@ Keep the project's `DESIGN.md` in sync with `@theme`.
 Pick the smallest tool:
 
 - Static `class="..."` for one-off layout and copy.
-- `cn()` for conditionals, and when a `class` prop might collide with existing
-  utilities (`p-2` vs `p-4`).
-- `cva()` for reusable components with named variants (intent, size).
+- Svelte `class={[...]}` or `class={{ ... }}` for conditionals that cannot
+  collide. Since Svelte 5.16 this is clsx.
+- `cn()` when a parent `class` prop might collide with existing utilities
+  (`p-2` vs `p-4`). `cn()` is `twMerge(clsx(...))`.
+- `cva()` for reusable components with named variants (for example `intent`).
 
-Svelte 5 `class={[...]}` uses clsx, not `tailwind-merge`. Use `cn()` when
-utilities can conflict.
+Svelte's `class` arrays do not run `tailwind-merge`. Use `cn()` when utilities
+can conflict. The HTML attribute and the component prop are both `class`. Do
+not add a `className` prop. CVA 0.7 accepts `className` for React. Ignore that
+key.
 
 The dummy app's [`button.svelte`](./src/lib/components/atoms/button.svelte) is
-the canonical `cva` example: define it in a `<script module>`, type props with
-`VariantProps`, accept a `class` prop, and merge last.
+the canonical `cva` example. Define variants in `<script module>` (Svelte 5,
+shared per module, not per instance). Type the wrapper with
+`HTMLButtonAttributes` / `HTMLAnchorAttributes` from `svelte/elements`. Accept
+a `class` prop. Spread the rest, then override `class` last, the same way the
+[Svelte class docs](https://svelte.dev/docs/svelte/class) combine local classes
+with `props.class`. Render content with `{@render children?.()}`. Events are
+`onclick`.
 
-```ts
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '$lib/cn';
-
-const button = cva('inline-flex items-center rounded-md font-medium', {
-  variants: {
-    intent: {
-      primary: 'bg-accent text-background',
-      secondary: 'border border-border bg-background',
-    },
-  },
-  defaultVariants: {
-    intent: 'primary',
-  },
-});
-
-type ButtonVariants = VariantProps<typeof button>;
-
-// base → variants → state → consumer class
-cn(button({ intent: 'secondary' }), isPending && 'opacity-70', className);
+```svelte
+<button {...rest} class={cn(buttonVariants({ intent }), rest.class)}>
+  {@render children?.()}
+</button>
 ```
 
 ```svelte
-class={cn(buttonVariants({ intent }), className)}
+class={cn(buttonVariants({ intent }), disabled && 'opacity-70', rest.class)}
 ```
+
+Order is always: base → variants → state conditionals → parent `class`.
 
 - Do not concatenate Tailwind names (`bg-${color}-500`). The compiler drops them.
 - Do not use `cva` for a single boolean. `cn('base', open && 'translate-x-0')`
-  is enough.
+  or `class={[...]}` is enough.
 - `compoundVariants` apply classes when several variants match. See the
   [CVA docs](https://cva.style/docs/getting-started/variants).
 - Enable Tailwind IntelliSense inside `cn`/`cva` via `.vscode/settings.json`
