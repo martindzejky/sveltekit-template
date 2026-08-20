@@ -17,7 +17,7 @@ Prefer existing patterns.
 Use `cva` (`class-variance-authority`) for named Tailwind variants.
 Use `cn()` from `$lib/cn` for conditionals and to merge a parent `class` prop last.
 The prop is `class`, not `className`. Events are `onclick`, not `onClick`.
-See `.cursor/skills/tailwind-cva/SKILL.md` and `src/lib/components/atoms/button.svelte`.
+See the `tailwind-cva` skill and `src/lib/components/atoms/button.svelte`.
 Good accessibility is required.
 Do not add unrequested features or APIs.
 Store temporary artifacts in `tmp/`, not the repo root.

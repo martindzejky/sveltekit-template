@@ -80,7 +80,7 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 .
 ├── .cursor/
 │   ├── rules/                  # always-applied agent rules (agent/cloud/local)
-│   ├── skills/                 # tailwind-cva (plus per-project skills)
+│   ├── skills/                 # task-specific agent skills (per project)
 │   ├── agents/                 # subagent definitions (per project)
 │   ├── environment.json        # cloud install + Docker
 │   ├── install.sh              # cloud: agentfiles refresh + nvm + pnpm install
@@ -178,8 +178,8 @@ adjust values:
 | `.editorconfig`         | ✓       | copy file                                                     |
 | `.gitignore`            | ✓       | copy file (add `src/generated` with Prisma)                   |
 | `.prettierignore`       | ✓       | `pnpm-lock.yaml`, asset dirs                                  |
-| `prettier.config.mjs`   | ✓       | copy file (`tailwindFunctions`: `cn`, `cva`)                  |
-| `.vscode/settings.json` | ✓       | Tailwind IntelliSense for `cn`/`cva`                          |
+| `prettier.config.mjs`   | ✓       | copy file (`tailwindFunctions`: `clsx`, `cn`, `cva`)          |
+| `.vscode/settings.json` | ✓       | Tailwind IntelliSense for `clsx`/`cn`/`cva`                   |
 | `eslint.config.mjs`     | ✓       | flat config: js + ts + svelte + prettier                      |
 | `pnpm-workspace.yaml`   | ✓       | `allowBuilds` for dependencies                                |
 | `tsconfig.json`         | ✓       | copy file                                                     |
@@ -353,8 +353,7 @@ Tailwind import and repoint the `--font-*` tokens, e.g.:
 Keep the project's `DESIGN.md` in sync with `@theme`.
 
 **Variant classes.** Stop building class strings with ternaries. Use
-[`cn()`](./src/lib/cn.ts) and [CVA](https://cva.style) instead. See
-[`.cursor/skills/tailwind-cva/SKILL.md`](./.cursor/skills/tailwind-cva/SKILL.md).
+[`cn()`](./src/lib/cn.ts) and [CVA](https://cva.style) instead.
 
 Pick the smallest tool:
 
@@ -581,10 +580,8 @@ General local/cloud behavior is in global user rules at `~/.cursor/rules/`
 
 ### 7.2 Skills
 
-Task-specific skills go in **`.cursor/skills/<skill-name>/SKILL.md`**.
-
-This template ships [`.cursor/skills/tailwind-cva/SKILL.md`](./.cursor/skills/tailwind-cva/SKILL.md)
-(when to use static classes vs `cn()` vs `cva`). Add more skills per project as needed.
+Task-specific skills go in **`.cursor/skills/<skill-name>/SKILL.md`** (per project;
+none shipped).
 
 ### 7.3 Subagents
 

@@ -1,3 +1,3 @@
 {
-  "tailwindCSS.classFunctions": ["cn", "cva"]
+  "tailwindCSS.classFunctions": ["clsx", "cn", "cva"]
 }
