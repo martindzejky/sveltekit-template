@@ -156,10 +156,10 @@ project's actual integrations, locale, brand, and env keys.
 - `class-variance-authority` (CVA), `clsx`, `tailwind-merge`
 - `@lucide/svelte`, `super-sitemap`
 - Dev: `eslint`, `@eslint/js`, `@eslint/compat`, `eslint-plugin-svelte`,
-  `eslint-config-prettier`, `typescript-eslint`, `globals`, `prettier`,
-  `prettier-plugin-svelte`, `prettier-plugin-tailwindcss`,
-  `prettier-plugin-organize-imports`, `lefthook`, `svelte-check`, `typescript`,
-  `@types/node`
+  `eslint-plugin-better-tailwindcss`, `eslint-config-prettier`,
+  `typescript-eslint`, `globals`, `prettier`, `prettier-plugin-svelte`,
+  `prettier-plugin-tailwindcss`, `prettier-plugin-organize-imports`,
+  `lefthook`, `svelte-check`, `typescript`, `@types/node`
 
 **Optional installs** (add when scoped for that site): `prisma`, `@prisma/client`,
 `@prisma/adapter-pg`, `pg`, `dotenv` (database); `nodemailer` (email); `stripe`,
@@ -180,7 +180,7 @@ adjust values:
 | `.prettierignore`       | ✓       | `pnpm-lock.yaml`, asset dirs                                  |
 | `prettier.config.mjs`   | ✓       | copy file (`tailwindFunctions`: `clsx`, `cn`, `cva`)          |
 | `.vscode/settings.json` | ✓       | Tailwind IntelliSense for `clsx`/`cn`/`cva`                   |
-| `eslint.config.mjs`     | ✓       | flat config: js + ts + svelte + prettier                      |
+| `eslint.config.mjs`     | ✓       | flat config: js + ts + svelte + prettier + Tailwind           |
 | `pnpm-workspace.yaml`   | ✓       | `allowBuilds` for dependencies                                |
 | `tsconfig.json`         | ✓       | copy file                                                     |
 | `svelte.config.js`      | ✓       | `adapter-node` + `vitePreprocess` (see file)                  |
@@ -397,6 +397,8 @@ Order is always: base → variants → state conditionals → parent `class`.
   [CVA docs](https://cva.style/docs/getting-started/variants).
 - Enable Tailwind IntelliSense inside `cn`/`cva` via `.vscode/settings.json`
   (`tailwindCSS.classFunctions`). Prettier sorts those calls via `tailwindFunctions`.
+  ESLint (`eslint-plugin-better-tailwindcss`, correctness rules) lints the same
+  helpers plus `class` attributes against `src/app.css`.
 - Share repeated class clusters that are not already global in `app.css` as small
   string exports. This template's keyboard focus outline is global, so do not
   duplicate it on every component.
