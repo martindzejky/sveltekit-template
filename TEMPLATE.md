@@ -39,6 +39,7 @@ template.
 | Build              | **Vite**                                                                       | ✓                       |
 | Deploy             | **Railway** with **`@sveltejs/adapter-node`**                                  | ✓                       |
 | CSS                | **Tailwind CSS v4** via `@tailwindcss/vite` + `@theme` tokens in `src/app.css` | ✓                       |
+| Variants           | **CVA** + `cn()` (`clsx` + `tailwind-merge`) for type-safe Tailwind variants   | ✓                       |
 | Images             | **`@sveltejs/enhanced-img`**                                                   | ✓                       |
 | Icons              | **`@lucide/svelte`**                                                           | ✓                       |
 | Fonts              | **`@fontsource/*`** fonts as needed                                            | system stack by default |
@@ -94,8 +95,11 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 │   ├── error.html
 │   ├── generated/prisma/       # (optional) gitignored Prisma client output
 │   ├── lib/
+│   │   ├── cn.ts               # twMerge(clsx(...)) class helper
 │   │   ├── assets/
-│   │   ├── components/         # atoms / layout / molecules / organisms as needed
+│   │   ├── components/
+│   │   │   ├── atoms/          # button.svelte (CVA reference)
+│   │   │   └── organisms/      # header, footer
 │   │   ├── db/                 # (optional) prisma client wrapper (*.server.ts)
 │   │   └── …                   # additional feature modules
 │   └── routes/                 # SvelteKit file-based routing
@@ -149,6 +153,7 @@ project's actual integrations, locale, brand, and env keys.
 - `@sveltejs/adapter-node`, `@sveltejs/kit`, `svelte`, `vite`,
   `@sveltejs/vite-plugin-svelte`, `@sveltejs/enhanced-img`
 - `@tailwindcss/vite`, `tailwindcss`
+- `class-variance-authority` (CVA), `clsx`, `tailwind-merge`
 - `@lucide/svelte`, `super-sitemap`
 - Dev: `eslint`, `@eslint/js`, `@eslint/compat`, `eslint-plugin-svelte`,
   `eslint-config-prettier`, `typescript-eslint`, `globals`, `prettier`,
@@ -166,19 +171,20 @@ project's actual integrations, locale, brand, and env keys.
 These are present in the repo and are the source of truth. Copy patterns,
 adjust values:
 
-| File                  | In repo | Notes                                                         |
-| --------------------- | ------- | ------------------------------------------------------------- |
-| `.nvmrc`              | ✓       | `24`                                                          |
-| `.npmrc`              | ✓       | `engine-strict=true`                                          |
-| `.editorconfig`       | ✓       | copy file                                                     |
-| `.gitignore`          | ✓       | copy file (add `src/generated` with Prisma)                   |
-| `.prettierignore`     | ✓       | `pnpm-lock.yaml`, asset dirs                                  |
-| `prettier.config.mjs` | ✓       | copy file                                                     |
-| `eslint.config.mjs`   | ✓       | flat config: js + ts + svelte + prettier                      |
-| `pnpm-workspace.yaml` | ✓       | `allowBuilds` for dependencies                                |
-| `tsconfig.json`       | ✓       | copy file                                                     |
-| `svelte.config.js`    | ✓       | `adapter-node` + `vitePreprocess` (see file)                  |
-| `vite.config.ts`      | ✓       | `enhancedImages()`, `sveltekit()`, `tailwindcss()` (see file) |
+| File                    | In repo | Notes                                                         |
+| ----------------------- | ------- | ------------------------------------------------------------- |
+| `.nvmrc`                | ✓       | `24`                                                          |
+| `.npmrc`                | ✓       | `engine-strict=true`                                          |
+| `.editorconfig`         | ✓       | copy file                                                     |
+| `.gitignore`            | ✓       | copy file (add `src/generated` with Prisma)                   |
+| `.prettierignore`       | ✓       | `pnpm-lock.yaml`, asset dirs                                  |
+| `prettier.config.mjs`   | ✓       | copy file (`tailwindFunctions`: `clsx`, `cn`, `cva`)          |
+| `.vscode/settings.json` | ✓       | Tailwind IntelliSense for `clsx`/`cn`/`cva`                   |
+| `eslint.config.mjs`     | ✓       | flat config: js + ts + svelte + prettier                      |
+| `pnpm-workspace.yaml`   | ✓       | `allowBuilds` for dependencies                                |
+| `tsconfig.json`         | ✓       | copy file                                                     |
+| `svelte.config.js`      | ✓       | `adapter-node` + `vitePreprocess` (see file)                  |
+| `vite.config.ts`        | ✓       | `enhancedImages()`, `sveltekit()`, `tailwindcss()` (see file) |
 
 **`package.json` scripts.** See [`package.json`](./package.json) for the live set.
 Core scripts: `prepare` (`svelte-kit sync; lefthook install || true`), `sync`,
@@ -346,6 +352,57 @@ Tailwind import and repoint the `--font-*` tokens, e.g.:
 
 Keep the project's `DESIGN.md` in sync with `@theme`.
 
+**Variant classes.** Stop building class strings with ternaries. Use
+[`cn()`](./src/lib/cn.ts) and [CVA](https://cva.style) instead.
+
+Pick the smallest tool:
+
+- Static `class="..."` for one-off layout and copy.
+- Svelte `class={[...]}` or `class={{ ... }}` for conditionals that cannot
+  collide. Since Svelte 5.16 this is clsx.
+- `cn()` when a parent `class` prop might collide with existing utilities
+  (`p-2` vs `p-4`). `cn()` is `twMerge(clsx(...))`.
+- `cva()` for reusable components with named variants (for example `intent`).
+
+Svelte's `class` arrays do not run `tailwind-merge`. Use `cn()` when utilities
+can conflict. The HTML attribute and the component prop are both `class`. Do
+not add a `className` prop. CVA 0.7 accepts `className` for React. Ignore that
+key.
+
+The dummy app's [`button.svelte`](./src/lib/components/atoms/button.svelte) is
+the canonical `cva` example. Define variants in `<script module>` (Svelte 5,
+shared per module, not per instance). Type the wrapper with
+`HTMLButtonAttributes` / `HTMLAnchorAttributes` from `svelte/elements`. Accept
+a `class` prop. Spread the rest, then override `class` last, the same way the
+[Svelte class docs](https://svelte.dev/docs/svelte/class) combine local classes
+with `props.class`. Render content with `{@render children?.()}`. Events are
+`onclick`.
+
+```svelte
+<button {...rest} class={cn(buttonVariants({ intent }), rest.class)}>
+  {@render children?.()}
+</button>
+```
+
+```svelte
+class={cn(buttonVariants({ intent }), disabled && 'opacity-70', rest.class)}
+```
+
+Order is always: base → variants → state conditionals → parent `class`.
+
+- Do not concatenate Tailwind names (`bg-${color}-500`). The compiler drops them.
+- Do not use `cva` for a single boolean. `cn('base', open && 'translate-x-0')`
+  or `class={[...]}` is enough.
+- `compoundVariants` apply classes when several variants match. See the
+  [CVA docs](https://cva.style/docs/getting-started/variants).
+- Enable Tailwind IntelliSense inside `cn`/`cva` via `.vscode/settings.json`
+  (`tailwindCSS.classFunctions`). Prettier sorts those calls via `tailwindFunctions`.
+- Share repeated class clusters that are not already global in `app.css` as small
+  string exports. This template's keyboard focus outline is global, so do not
+  duplicate it on every component.
+- Install the stable `class-variance-authority` package (0.x). The npm package named
+  `cva` is the 1.0 beta; do not use it until it is stable.
+
 If the project is using separate light and dark mode colors, utilize modern CSS (`light-dark()`):
 
 ```css
@@ -363,9 +420,9 @@ body {
 ### 4.3 Components
 
 Tiered folders (`atoms/`, `molecules/`, `layout/`, `organisms/`) as complexity
-grows. The base template ships only `organisms/header.svelte` and
-`organisms/footer.svelte` for the shell. Document component contracts and page
-composition concisely in the project's `DESIGN.md`.
+grows. The base template ships `atoms/button.svelte` (CVA reference), plus
+`organisms/header.svelte` and `organisms/footer.svelte` for the shell. Document
+component contracts and page composition concisely in the project's `DESIGN.md`.
 
 ### 4.4 Routes
 
@@ -558,7 +615,7 @@ Reused in every project:
 | `.cursor/` cloud setup   | ✓                                 | skills/agents per project             |
 | Railway deployment       | ✓                                 | env vars, services count              |
 | `BRAND.md` + `DESIGN.md` | two-file pattern at repo root     | all content and tokens                |
-| `src/lib/components/`    | naming conventions                | which components exist                |
+| `src/lib/components/`    | naming conventions, CVA variants  | which components exist                |
 | `prisma/schema.prisma`   | generator output path, PostgreSQL | models (optional feature)             |
 | `src/routes/`            | SvelteKit conventions             | pages and APIs                        |
 | `docker-compose.yml`     | pattern                           | which services (optional)             |

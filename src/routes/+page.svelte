@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from '$lib/components/atoms/button.svelte';
   import { Github, Rocket } from '@lucide/svelte';
 </script>
 
@@ -30,18 +31,17 @@
   </p>
 
   <div class="flex flex-wrap items-center justify-center gap-3">
-    <a
+    <Button
       href="https://github.com/martindzejky/sveltekit-template/blob/master/TEMPLATE.md"
-      class="inline-flex h-10 items-center justify-center rounded-md bg-accent px-4 font-medium text-background transition hover:bg-accent-dark focus-visible:bg-accent-dark focus-visible:outline-accent-dark motion-safe:hover:scale-105 motion-safe:active:scale-95"
     >
       Read the template guide
-    </a>
-    <a
+    </Button>
+    <Button
+      intent="secondary"
       href="https://github.com/martindzejky/sveltekit-template"
-      class="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 font-medium transition hover:bg-surface focus-visible:bg-surface motion-safe:hover:scale-105 motion-safe:active:scale-95"
     >
       <Github size={18} aria-hidden="true" />
       View on GitHub
-    </a>
+    </Button>
   </div>
 </section>

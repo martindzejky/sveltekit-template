@@ -16,12 +16,13 @@ project when needed.
 
 - **SvelteKit** + **Svelte 5** + **Vite**, deployed on **Railway** via `@sveltejs/adapter-node`
 - **Tailwind CSS v4** (`@tailwindcss/vite` + `@theme` tokens)
+- **CVA** (`class-variance-authority`) + `cn()` (`clsx` + `tailwind-merge`) for variant classes
 - `@sveltejs/enhanced-img` for images, `@lucide/svelte` for icons
 - **TypeScript**, **ESLint** (flat config) + **Prettier**, **lefthook** git hooks
 - **super-sitemap** + `robots.txt` / `sitemap.xml` routes
 - **GitHub Actions** CI: `check`, `lint`, `format`, `build`
 - Cursor agent setup (`.cursor`, cloud environment, Dockerfile)
-- A minimal dummy app: layout shell, homepage, error page, server hooks
+- A minimal dummy app: layout shell, homepage, error page, `button` atom, server hooks
 
 See [`TEMPLATE.md`](./TEMPLATE.md) for the full recipe, conventions, and the list
 of optional features. This is the go-to recipe book for my projects.
