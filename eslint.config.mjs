@@ -1,6 +1,7 @@
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
+import betterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import svelte from 'eslint-plugin-svelte';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
@@ -17,6 +18,16 @@ export default defineConfig(
   ...svelte.configs.recommended,
   prettier,
   ...svelte.configs.prettier,
+  {
+    ...betterTailwindcss.configs.correctness,
+    settings: {
+      'better-tailwindcss': {
+        // Tailwind v4 CSS-first config. Defaults already lint `class`,
+        // `clsx()`, `cn()`, `cva()` (base + variants + compoundVariants).
+        entryPoint: 'src/app.css',
+      },
+    },
+  },
   {
     languageOptions: {
       globals: { ...globals.browser, ...globals.node },
