@@ -53,6 +53,15 @@ for the user-facing copy.
 - **Do not** create `.env` files in the cloud.
 - Configure all vars from `.env.example` in the hosting platform (use placeholders where needed).
 
+### Global agentfiles
+
+On boot, Cloud Agent `start` fast-forwards `~/.agentfiles` from
+`https://github.com/martindzejky/agentfiles` (`master` only) and reruns `./install`.
+That links global Cursor rules and skills into `~/.cursor`. `/.cursor` must stay a
+symlink to the runtime user's `~/.cursor` so those rules are discovered from
+`/workspace`. Do not edit that checkout from a task. If the update fails, stop;
+do not reset it.
+
 ### Cloud-only runtime (only if the project uses local services)
 
 - Ensure Docker is running before `docker compose up -d` (see README for services).
