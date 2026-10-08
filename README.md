@@ -21,7 +21,7 @@ project when needed.
 - **TypeScript**, **ESLint** (flat config) + **Prettier**, **lefthook** git hooks
 - **super-sitemap** + `robots.txt` / `sitemap.xml` routes
 - **GitHub Actions** CI: `check`, `lint`, `format`, `build`
-- Cursor agent setup (`.cursor`, cloud environment, Dockerfile)
+- AI agent instructions (`AGENTS.md`)
 - A minimal dummy app: layout shell, homepage, error page, `button` atom, server hooks
 
 See [`TEMPLATE.md`](./TEMPLATE.md) for the full recipe, conventions, and the list
@@ -68,11 +68,11 @@ The dev server serves the dummy homepage. Replace `src/routes` and
 
 ## Reference docs
 
-| File                           | Contents                                                 |
-| ------------------------------ | -------------------------------------------------------- |
-| `README.md` (this file)        | Description of this template repository                  |
-| [`TEMPLATE.md`](./TEMPLATE.md) | Full project setup recipe and optional features          |
-| `.cursor`                      | AI agent rules, skills, subagents, and cloud environment |
+| File                           | Contents                                        |
+| ------------------------------ | ----------------------------------------------- |
+| `README.md` (this file)        | Description of this template repository         |
+| [`TEMPLATE.md`](./TEMPLATE.md) | Full project setup recipe and optional features |
+| [`AGENTS.md`](./AGENTS.md)     | AI agent instructions and cloud workflow        |
 
 ## Languages
 

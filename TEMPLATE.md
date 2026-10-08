@@ -31,22 +31,22 @@ template.
 
 ### Core (same in every project)
 
-| Layer              | Choice                                                                         | In this repo            |
-| ------------------ | ------------------------------------------------------------------------------ | ----------------------- |
-| Runtime            | Node.js **24+** (`engines.node`, `.nvmrc`, CI)                                 | ✓                       |
-| Package manager    | **pnpm** (`packageManager` field, `engine-strict=true` in `.npmrc`)            | ✓                       |
-| Framework          | **Svelte** + **SvelteKit** (SSR, file-based routing)                           | ✓                       |
-| Build              | **Vite**                                                                       | ✓                       |
-| Deploy             | **Railway** with **`@sveltejs/adapter-node`**                                  | ✓                       |
-| CSS                | **Tailwind CSS v4** via `@tailwindcss/vite` + `@theme` tokens in `src/app.css` | ✓                       |
-| Variants           | **CVA** + `cn()` (`clsx` + `tailwind-merge`) for type-safe Tailwind variants   | ✓                       |
-| Images             | **`@sveltejs/enhanced-img`**                                                   | ✓                       |
-| Icons              | **`@lucide/svelte`**                                                           | ✓                       |
-| Fonts              | **`@fontsource/*`** fonts as needed                                            | system stack by default |
-| SEO                | **super-sitemap**, **schema-dts**                                              | super-sitemap only ✓    |
-| Git hooks          | **lefthook** (`pnpm check`/`lint`/`format` on pre-push)                        | ✓                       |
-| CI                 | GitHub Actions: `check`, `lint`, `format`, `build`                             | ✓                       |
-| Cursor agent setup | `.cursor`, AI rule files with instructions + full setup for cloud agents       | ✓                       |
+| Layer           | Choice                                                                         | In this repo            |
+| --------------- | ------------------------------------------------------------------------------ | ----------------------- |
+| Runtime         | Node.js **24+** (`engines.node`, `.nvmrc`, CI)                                 | ✓                       |
+| Package manager | **pnpm** (`packageManager` field, `engine-strict=true` in `.npmrc`)            | ✓                       |
+| Framework       | **Svelte** + **SvelteKit** (SSR, file-based routing)                           | ✓                       |
+| Build           | **Vite**                                                                       | ✓                       |
+| Deploy          | **Railway** with **`@sveltejs/adapter-node`**                                  | ✓                       |
+| CSS             | **Tailwind CSS v4** via `@tailwindcss/vite` + `@theme` tokens in `src/app.css` | ✓                       |
+| Variants        | **CVA** + `cn()` (`clsx` + `tailwind-merge`) for type-safe Tailwind variants   | ✓                       |
+| Images          | **`@sveltejs/enhanced-img`**                                                   | ✓                       |
+| Icons           | **`@lucide/svelte`**                                                           | ✓                       |
+| Fonts           | **`@fontsource/*`** fonts as needed                                            | system stack by default |
+| SEO             | **super-sitemap**, **schema-dts**                                              | super-sitemap only ✓    |
+| Git hooks       | **lefthook** (`pnpm check`/`lint`/`format` on pre-push)                        | ✓                       |
+| CI              | GitHub Actions: `check`, `lint`, `format`, `build`                             | ✓                       |
+| AI agent setup  | `AGENTS.md` project instructions                                               | ✓                       |
 
 > **Database is treated as optional here.** Many quick projects ship without one
 > and add Postgres + Prisma later (see the optional table and §4.6). If a project
@@ -78,13 +78,6 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 
 ```
 .
-├── .cursor/
-│   ├── rules/                  # always-applied agent rules (agent/cloud/local)
-│   ├── skills/                 # task-specific agent skills (per project)
-│   ├── agents/                 # subagent definitions (per project)
-│   ├── environment.json        # cloud install + Docker
-│   ├── install.sh              # cloud: agentfiles refresh + nvm + pnpm install
-│   └── Dockerfile              # cloud VM image
 ├── .github/workflows/ci.yml    # CI
 ├── prisma/                     # (optional) schema.prisma + migrations
 ├── src/
@@ -105,6 +98,7 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 │   └── routes/                 # SvelteKit file-based routing
 ├── static/
 ├── tmp/
+├── AGENTS.md                   # project instructions and cloud-only workflow
 ├── BRAND.md                    # brand voice, audience, mood
 ├── DESIGN.md                   # visual system: tokens, components, a11y
 ├── docker-compose.yml          # (optional) local services
@@ -493,7 +487,7 @@ On Railway, set the worker service start command to `sh scripts/start-worker.sh`
 | User-facing copy in `src/`  | Site locale |
 | Code, README, docs, AI chat | English     |
 
-Encode in [`.cursor/rules/agent.mdc`](./.cursor/rules/agent.mdc). This is only relevant
+Encode in [`AGENTS.md`](./AGENTS.md). This is only relevant
 for projects which are not entirely in English and use a different language for user-facing copy.
 
 ---
@@ -534,9 +528,9 @@ env:
   PUBLIC_UMAMI_URL: placeholder
 ```
 
-### Cursor agent workflow
+### AI agent workflow
 
-See [§7.1](#71-rules-always-applied).
+See [§7.1](#71-project-instructions).
 
 ---
 
@@ -567,43 +561,17 @@ and focus/motion/imagery/a11y rules.
 
 ---
 
-## 7. AI agent setup (`.cursor/`)
+## 7. AI agent setup (`AGENTS.md`)
 
-### 7.1 Rules (always applied)
+### 7.1 Project instructions
 
-Three rules, generalized in this repo:
+[`AGENTS.md`](./AGENTS.md) at the repository root contains the project instructions:
 
-- [`agent.mdc`](./.cursor/rules/agent.mdc) contains universal rules and instructions, always applied, project-specific
-- [`cloud.mdc`](./.cursor/rules/cloud.mdc) is the autonomous cloud workflow (metadata: `environments: cloud`)
-- [`local.mdc`](./.cursor/rules/local.mdc) is the collaborative local workflow (metadata: `environments: local`)
+- General guidance covers code, verification, design, git hooks, and language policy.
+- The cloud workflow section applies only in cloud environments.
 
-General local/cloud behavior is in global user rules at `~/.cursor/rules/`
-(the repo files point to the relevant ones).
-
-### 7.2 Skills
-
-Task-specific skills go in **`.cursor/skills/<skill-name>/SKILL.md`** (per project;
-none shipped).
-
-### 7.3 Subagents
-
-Subagent definitions go in **`.cursor/agents/<agent-name>.md`** (per project; none
-shipped).
-
-### 7.4 Cloud environment
-
-Reused in every project:
-
-- [`.cursor/environment.json`](./.cursor/environment.json) builds via the Dockerfile
-  as user `ubuntu`, starts Docker, installs via `install.sh`, and declares
-  `agentfiles` as a `repositoryDependencies` entry
-- [`.cursor/install.sh`](./.cursor/install.sh) refreshes agentfiles from `origin/master`,
-  runs `~/.agentfiles/install`, then `nvm install`, `corepack prepare --activate`, and
-  `pnpm install --frozen-lockfile`
-- [`.cursor/Dockerfile`](./.cursor/Dockerfile) provides Ubuntu + Docker + NVM Node 24
-  and `python3` (for agentfiles/dotbot), bakes in a baseline agentfiles copy (refreshed
-  at runtime by `install.sh`), and symlinks `/.cursor` → `/home/ubuntu/.cursor` so
-  Cursor's upward walk finds it
+General local/cloud behavior comes from the global user instructions installed
+by agentfiles for the agent platform in use.
 
 ---
 
@@ -614,7 +582,7 @@ Reused in every project:
 | Core stack & tooling     | ✓                                 | —                                     |
 | Config file patterns     | ✓                                 | —                                     |
 | CI / lefthook / scripts  | ✓                                 | add worker/db scripts if used         |
-| `.cursor/` cloud setup   | ✓                                 | skills/agents per project             |
+| `AGENTS.md`              | shared workflow conventions       | project instructions                  |
 | Railway deployment       | ✓                                 | env vars, services count              |
 | `BRAND.md` + `DESIGN.md` | two-file pattern at repo root     | all content and tokens                |
 | `src/lib/components/`    | naming conventions, CVA variants  | which components exist                |
@@ -646,7 +614,7 @@ Deliver:
 1. Repo scaffold matching §2 layout and §3 config patterns
 2. BRAND.md and DESIGN.md for this project
 3. README.md with setup, env pointer, Railway deploy notes
-4. .cursor/rules (+ skills/agents only if useful for this project)
+4. AGENTS.md with project instructions
 5. docker-compose + .env.example (services matching integrations), only if needed
 6. Minimal working homepage + layout shell
 7. CI workflow
@@ -657,7 +625,7 @@ Do not copy TEMPLATE.md into the new repo (read it from sveltekit-template only)
 Do not copy data models, routes, or components from reference repos unless listed.
 After copying or referencing any file from this template repo, replace template-style
 placeholders and template-repo descriptions (e.g. in .env.example, README.md,
-.cursor/rules) with target-project values. Do not leave unfilled <> placeholders
+AGENTS.md) with target-project values. Do not leave unfilled <> placeholders
 or wording like "in this template…".
 ```
 
@@ -673,7 +641,7 @@ or wording like "in this template…".
 - [ ] All `$env/static/*` imports have CI placeholders
 - [ ] `DESIGN.md` reflects live tokens in `app.css`
 - [ ] README points to `.env.example` for env keys
-- [ ] `.cursor/rules/agent.mdc` language policy matches site locale
+- [ ] `AGENTS.md` language policy matches site locale
 - [ ] `app.html` has correct `lang` and default meta
 - [ ] Railway start command is `pnpm start`
 
