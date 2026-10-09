@@ -565,13 +565,12 @@ and focus/motion/imagery/a11y rules.
 
 ### 7.1 Project instructions
 
-[`AGENTS.md`](./AGENTS.md) at the repository root contains the project instructions:
+[`AGENTS.md`](./AGENTS.md) at the repository root is the project instructions for every agent:
 
-- General guidance covers code, verification, design, git hooks, and language policy.
-- The cloud workflow section applies only in cloud environments.
+- Shared guidance covers code, verification, design, git hooks, and language policy.
+- The cloud section applies in any cloud environment. It covers environment variables, local services, and non-interactive Prisma migrations.
 
-General local/cloud behavior comes from the global user instructions installed
-by agentfiles for the agent platform in use.
+Platform-specific habits stay in the global instructions agentfiles installs for that agent.
 
 ---
 
