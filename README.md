@@ -17,6 +17,8 @@ I keep this repository up to date with my latest conventions and preferences.
 
 [package.json](./package.json) contains the dependencies and scripts. Database,
 email, payments, analytics, and background jobs are optional and are not installed.
+The bootstrap recipes use PostgreSQL with Kysely, pg-boss for jobs, and Resend
+for email.
 
 ## Local setup
 
