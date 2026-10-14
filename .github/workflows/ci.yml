@@ -4,8 +4,8 @@ on:
   - push
   - pull_request
 
-# When the app imports from `$env/static/*`, add an `env:` block here with a
-# placeholder for every key (see TEMPLATE.md §5). The base template imports none.
+# When checks or builds need environment values, add an `env:` block here with
+# placeholders matching .env.example (see TEMPLATE.md §5). The base template needs none.
 
 permissions:
   contents: read

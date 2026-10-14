@@ -5,7 +5,7 @@ conventions for new websites. Clone it, point an AI agent at it, and bootstrap a
 new site with a consistent setup.
 
 I keep this repository up to date with my latest conventions and preferences.
-[TEMPLATE.md](./TEMPLATE.md) covers bootstrap steps and optional integrations.
+[TEMPLATE.md](./TEMPLATE.md) covers stack choices, setup, and preferred conventions.
 
 ## Stack
 
@@ -17,8 +17,9 @@ I keep this repository up to date with my latest conventions and preferences.
 
 [package.json](./package.json) contains the dependencies and scripts. Database,
 email, payments, analytics, and background jobs are optional and are not installed.
-The bootstrap recipes use PostgreSQL with Kysely, pg-boss for jobs, and Resend
-for email.
+Preferred choices include PostgreSQL with Kysely, pg-boss for jobs, and Resend
+for email. See [TEMPLATE.md](./TEMPLATE.md#1-stack-and-documentation) for the
+optional stack and links to library documentation.
 
 ## Local setup
 
