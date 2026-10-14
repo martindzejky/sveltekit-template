@@ -1,4 +1,5 @@
-import { redirect, type Handle } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
+import type { Handle } from '@sveltejs/kit/hooks';
 
 export const handle: Handle = async ({ event, resolve }) => {
   // ignore localhost
@@ -10,7 +11,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (!event.url.protocol.startsWith('https:')) {
     const target = new URL(event.url);
     target.protocol = 'https:';
-    return redirect(308, target);
+    return redirect(308, target, { external: [target.origin] });
   }
 
   // ignore Railway generated domains
@@ -22,7 +23,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (!event.url.hostname.startsWith('www.')) {
     const target = new URL(event.url);
     target.hostname = 'www.' + target.hostname;
-    return redirect(308, target);
+    return redirect(308, target, { external: [target.origin] });
   }
 
   return resolve(event);

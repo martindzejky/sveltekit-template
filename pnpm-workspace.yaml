@@ -2,5 +2,3 @@ allowBuilds:
   esbuild: true
   lefthook: true
   sharp: true
-minimumReleaseAgeExclude:
-  - '@sveltejs/adapter-node@5.5.7'

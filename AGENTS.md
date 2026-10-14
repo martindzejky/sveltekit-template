@@ -10,14 +10,14 @@ When you finish, run `pnpm fix` and `pnpm check`. Also run `pnpm build` when the
 Write simple, minimal code.
 Prefer patterns already in the repo.
 Use `cva` from `class-variance-authority` for named Tailwind variants.
-Use `cn()` from `$lib/cn` for conditionals, and pass a parent `class` prop through it last so the parent wins.
+Use `cn()` from `#lib/cn.ts` for conditionals, and pass a parent `class` prop through it last so the parent wins.
 The prop is `class`. Events are `onclick`.
 See the `tailwind-cva` skill and `src/lib/components/atoms/button.svelte`.
 Keep the UI accessible.
 Do not add features or APIs nobody asked for.
 Put temporary files in `tmp/`, not the repo root.
 
-If `pnpm check` misses `$env/static/*` exports, run `pnpm sync`.
+Run `pnpm sync` if `pnpm check` misses `$app/env/*` exports after you edit `src/env.ts`.
 
 ## Design and brand
 
@@ -60,19 +60,3 @@ Wait until Postgres is `healthy` in `docker compose ps` before a migration or a 
 If migrate fails on a fresh Postgres volume, run `docker compose down -v`, start the services again, and retry.
 When the project has a background worker, run it in its own process. The README says how.
 The first Vite SSR request on a cold machine can take 15 to 18 seconds. Later requests are fast.
-
-### Database migrations
-
-Skip this when the project does not use Prisma.
-
-`pnpm db:migrate:dev` asks for a migration name and hangs when nobody can type one. In a cloud session or in CI, write the SQL first, then apply it:
-
-```sh
-# Write migration SQL from pending schema changes. This does not apply it.
-pnpm exec prisma migrate dev --name <descriptive_snake_case_name> --create-only
-
-# Apply pending migrations
-pnpm db:migrate:deploy
-```
-
-Use a short snake_case name that says what changed, such as `add_contact_source` or `drop_legacy_column`.

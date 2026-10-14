@@ -27,7 +27,7 @@
 </script>
 
 <script lang="ts">
-  import { cn } from '$lib/cn';
+  import { cn } from '#lib/cn.ts';
   import type {
     HTMLAnchorAttributes,
     HTMLButtonAttributes,

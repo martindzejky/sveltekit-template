@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import * as sitemap from 'super-sitemap';
+import * as sitemap from 'super-sitemap/sveltekit';
 
 export const GET: RequestHandler = async (event) => {
   const origin = event.url.origin;

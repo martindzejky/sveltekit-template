@@ -14,7 +14,7 @@ project when needed.
 
 ## What's inside
 
-- **SvelteKit** + **Svelte 5** + **Vite**, deployed on **Railway** via `@sveltejs/adapter-node`
+- **SvelteKit 3** + **Svelte 5** + **Vite 8**, deployed on **Railway** via `@sveltejs/adapter-node`
 - **Tailwind CSS v4** (`@tailwindcss/vite` + `@theme` tokens)
 - **CVA** (`class-variance-authority`) + `cn()` (`clsx` + `tailwind-merge`) for variant classes
 - `@sveltejs/enhanced-img` for images, `@lucide/svelte` for icons
@@ -64,7 +64,10 @@ The dev server serves the dummy homepage. Replace `src/routes` and
 | Format check            | `pnpm format` |
 | Lint                    | `pnpm lint`   |
 
-`pnpm sync` regenerates `$env/static/*` types after env or SvelteKit config changes.
+Configure SvelteKit in `vite.config.ts`. Import library files through
+`#lib/*`, as declared in `package.json`, and include the file extension.
+
+`pnpm sync` regenerates types after changes to `src/env.ts` or SvelteKit config.
 
 ## Reference docs
 

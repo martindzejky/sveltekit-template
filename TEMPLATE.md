@@ -107,7 +107,6 @@ uses. Files marked _(optional)_ are not in this repo; add them with the recipes 
 ├── prettier.config.mjs
 ├── lefthook.yml
 ├── prisma.config.ts            # (optional) Prisma config
-├── svelte.config.js
 ├── tsconfig.json
 ├── vite.config.ts
 ├── README.md                   # describes this repo
@@ -165,24 +164,28 @@ project's actual integrations, locale, brand, and env keys.
 These are present in the repo and are the source of truth. Copy patterns,
 adjust values:
 
-| File                    | In repo | Notes                                                         |
-| ----------------------- | ------- | ------------------------------------------------------------- |
-| `.nvmrc`                | ✓       | `24`                                                          |
-| `.npmrc`                | ✓       | `engine-strict=true`                                          |
-| `.editorconfig`         | ✓       | copy file                                                     |
-| `.gitignore`            | ✓       | copy file (add `src/generated` with Prisma)                   |
-| `.prettierignore`       | ✓       | `pnpm-lock.yaml`, asset dirs                                  |
-| `prettier.config.mjs`   | ✓       | copy file (`tailwindFunctions`: `clsx`, `cn`, `cva`)          |
-| `.vscode/settings.json` | ✓       | Tailwind IntelliSense for `clsx`/`cn`/`cva`                   |
-| `eslint.config.mjs`     | ✓       | flat config: js + ts + svelte + prettier + Tailwind           |
-| `pnpm-workspace.yaml`   | ✓       | `allowBuilds` for dependencies                                |
-| `tsconfig.json`         | ✓       | copy file                                                     |
-| `svelte.config.js`      | ✓       | `adapter-node` + `vitePreprocess` (see file)                  |
-| `vite.config.ts`        | ✓       | `enhancedImages()`, `sveltekit()`, `tailwindcss()` (see file) |
+| File                    | In repo | Notes                                                |
+| ----------------------- | ------- | ---------------------------------------------------- |
+| `.nvmrc`                | ✓       | `24`                                                 |
+| `.npmrc`                | ✓       | `engine-strict=true`                                 |
+| `.editorconfig`         | ✓       | copy file                                            |
+| `.gitignore`            | ✓       | copy file (add `src/generated` with Prisma)          |
+| `.prettierignore`       | ✓       | `pnpm-lock.yaml`, asset dirs                         |
+| `prettier.config.mjs`   | ✓       | copy file (`tailwindFunctions`: `clsx`, `cn`, `cva`) |
+| `.vscode/settings.json` | ✓       | Tailwind IntelliSense for `clsx`/`cn`/`cva`          |
+| `eslint.config.mjs`     | ✓       | flat config: js + ts + svelte + prettier + Tailwind  |
+| `pnpm-workspace.yaml`   | ✓       | `allowBuilds` for dependencies                       |
+| `tsconfig.json`         | ✓       | copy file                                            |
+| `vite.config.ts`        | ✓       | SvelteKit config and Vite plugins                    |
 
 **`package.json` scripts.** See [`package.json`](./package.json) for the live set.
 Core scripts: `prepare` (`svelte-kit sync; lefthook install || true`), `sync`,
 `dev`, `build`, `start`, `check`, `format`, `format:fix`, `lint`, `lint:fix`, `fix`.
+
+Configure SvelteKit 3 in `vite.config.ts`. Declare `"#lib/*": "./src/lib/*"`
+in the `package.json` `imports` field. Include file extensions in imports,
+such as `#lib/cn.ts`. The root `tsconfig.json` extends `$app/tsconfig` and sets
+`include` and `exclude`.
 
 When you add **Prisma**, extend `prepare` and add DB scripts:
 
@@ -283,9 +286,12 @@ Note: Umami needs its own database. Create it via a Postgres init config, e.g. a
 
 ### 3.4 Environment variables
 
-Pattern: **every** `$env/static/*` import must exist at build time. This is how
-SvelteKit works. Document all keys in [`.env.example`](./.env.example)
-with placeholders (never empty strings).
+Declare environment variables in `src/env.ts` with `defineEnvVars` from
+`@sveltejs/kit/env`. Import private values from `$app/env/private` and public
+values from `$app/env/public`. Variables are dynamic by default. Set
+`static: true` to inline a value at build time. Set `public: true` only for
+values safe to expose to the browser. Document all keys in
+[`.env.example`](./.env.example) with non-empty placeholder values.
 
 Do not list env vars in the README. Point to `.env.example`, where keys are
 explained by comments.
@@ -316,6 +322,7 @@ All projects deploy on **Railway**:
 - Set all env vars from `.env.example` in the Railway dashboard
 - Optional second Railway service for `pnpm start-worker` when using background jobs
 - Preview deploys use `*.up.railway.app`, which the [`src/hooks.server.ts`](./src/hooks.server.ts) redirect rules account for
+- For a fixed origin, set `paths.origin` in the `sveltekit(...)` config. Adapter-node 6 no longer reads `ORIGIN`.
 
 ---
 
@@ -437,10 +444,20 @@ and forces the canonical `www.` host.
 
 ### 4.6 Prisma client _(optional)_
 
-Add `src/lib/db/prisma.server.ts`:
+Declare `DATABASE_URL` in `src/env.ts`:
 
 ```ts
-import { DATABASE_URL } from '$env/static/private';
+import { defineEnvVars } from '@sveltejs/kit/env';
+
+export const variables = defineEnvVars({
+  DATABASE_URL: {},
+});
+```
+
+Then add `src/lib/db/prisma.server.ts`:
+
+```ts
+import { DATABASE_URL } from '$app/env/private';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../generated/prisma/client';
 
@@ -519,8 +536,8 @@ on `pre-push`. Installed via `pnpm install` → `prepare` script.
 
 [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs four parallel jobs on
 push and PR: `check`, `lint`, `format`, `build`. Node 24, `pnpm install --frozen-lockfile`.
-When the app imports `$env/static/*` keys, add an `env:` block
-injecting a placeholder for **every** key (mirror `.env.example`), for example:
+For env values needed during build or checks, add an `env:` block with
+placeholders matching `.env.example`:
 
 ```yaml
 env:
@@ -637,7 +654,7 @@ or wording like "in this template…".
 - [ ] `pnpm db:migrate:dev` succeeds (if using Prisma)
 - [ ] `pnpm dev` serves SSR pages
 - [ ] `pnpm fix && pnpm check && pnpm build` pass
-- [ ] All `$env/static/*` imports have CI placeholders
+- [ ] All env values needed during build or checks have CI placeholders
 - [ ] `DESIGN.md` reflects live tokens in `app.css`
 - [ ] README points to `.env.example` for env keys
 - [ ] `AGENTS.md` language policy matches site locale

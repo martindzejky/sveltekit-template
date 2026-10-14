@@ -1,8 +1,8 @@
 <script lang="ts">
   import '../app.css';
 
-  import Footer from '$lib/components/organisms/footer.svelte';
-  import Header from '$lib/components/organisms/header.svelte';
+  import Footer from '#lib/components/organisms/footer.svelte';
+  import Header from '#lib/components/organisms/header.svelte';
 
   const { children } = $props();
 </script>

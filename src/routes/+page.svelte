@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Button from '$lib/components/atoms/button.svelte';
-  import { Github, Rocket } from '@lucide/svelte';
+  import Button from '#lib/components/atoms/button.svelte';
+  import { GitFork, Rocket } from '@lucide/svelte';
 </script>
 
 <svelte:head>
@@ -40,7 +40,7 @@
       intent="secondary"
       href="https://github.com/martindzejky/sveltekit-template"
     >
-      <Github size={18} aria-hidden="true" />
+      <GitFork size={18} aria-hidden="true" />
       View on GitHub
     </Button>
   </div>
