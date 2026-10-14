@@ -1,84 +1,79 @@
 # SvelteKit web project template
 
-An opinionated **SvelteKit web project template** with my go-to stack, tooling,
-configs, and conventions for spinning up new websites. Clone it, point an AI agent
-at it, and bootstrap a new site with a consistent setup every time.
+An opinionated SvelteKit template with my go-to stack, tooling, configs, and
+conventions for new websites. Clone it, point an AI agent at it, and bootstrap a
+new site with a consistent setup.
 
-My goal is to keep this repository up-to-date with my latest conventions
-and preferences.
+I keep this repository up to date with my latest conventions and preferences.
+[TEMPLATE.md](./TEMPLATE.md) covers bootstrap steps and optional integrations.
 
-This repository ships the **core stack only** plus a small dummy app. Optional
-features (database, email, payments, analytics, background jobs) are not
-installed. They are described in [`TEMPLATE.md`](./TEMPLATE.md) so you can add them per
-project when needed.
+## Stack
 
-## What's inside
+- SvelteKit 3, Svelte 5, and Vite 8 with the Node adapter for Railway
+- Tailwind CSS 4, `class-variance-authority`, and the `cn()` class helper
+- `@sveltejs/enhanced-img` for images and `@lucide/svelte` for icons
+- TypeScript, ESLint, Prettier, and lefthook
+- `super-sitemap` with `robots.txt` and `sitemap.xml` endpoints
 
-- **SvelteKit 3** + **Svelte 5** + **Vite 8**, deployed on **Railway** via `@sveltejs/adapter-node`
-- **Tailwind CSS v4** (`@tailwindcss/vite` + `@theme` tokens)
-- **CVA** (`class-variance-authority`) + `cn()` (`clsx` + `tailwind-merge`) for variant classes
-- `@sveltejs/enhanced-img` for images, `@lucide/svelte` for icons
-- **TypeScript**, **ESLint** (flat config) + **Prettier**, **lefthook** git hooks
-- **super-sitemap** + `robots.txt` / `sitemap.xml` routes
-- **GitHub Actions** CI: `check`, `lint`, `format`, `build`
-- AI agent instructions (`AGENTS.md`)
-- A minimal dummy app: layout shell, homepage, error page, `button` atom, server hooks
+[package.json](./package.json) contains the dependencies and scripts. Database,
+email, payments, analytics, and background jobs are optional and are not installed.
 
-See [`TEMPLATE.md`](./TEMPLATE.md) for the full recipe, conventions, and the list
-of optional features. This is the go-to recipe book for my projects.
+## Local setup
 
-## Using this as a template
-
-When starting a new project, give an AI agent the link to this repository and the
-prompt template in [`TEMPLATE.md` §9](./TEMPLATE.md). Fill in the project specifics
-(name, locale, brand, features, integrations) and let it scaffold a sibling project
-following the same conventions.
-
-## Running the dummy app
-
-### Prerequisites
-
-- Node.js 24+
-- pnpm
-
-### First-time setup
+Use Node.js 24 or later and the pnpm version pinned in `package.json`.
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-The dev server serves the dummy homepage. Replace `src/routes` and
-`src/lib/components` with the new project's content.
+The template needs no environment variables or Docker services. Declare keys in
+`src/env.ts` when adding integrations and document them in
+[.env.example](./.env.example).
 
-### Scripts
+## Commands
 
-| Task                    | Command       |
-| ----------------------- | ------------- |
-| Dev server              | `pnpm dev`    |
-| Production build        | `pnpm build`  |
-| Start production server | `pnpm start`  |
-| Type check              | `pnpm check`  |
-| SvelteKit sync          | `pnpm sync`   |
-| Format + lint (fix)     | `pnpm fix`    |
-| Format check            | `pnpm format` |
-| Lint                    | `pnpm lint`   |
+| Task                       | Command       |
+| -------------------------- | ------------- |
+| Dev server                 | `pnpm dev`    |
+| Production build           | `pnpm build`  |
+| Start production server    | `pnpm start`  |
+| Type check                 | `pnpm check`  |
+| Regenerate framework types | `pnpm sync`   |
+| Fix formatting and lint    | `pnpm fix`    |
+| Check formatting           | `pnpm format` |
+| Lint                       | `pnpm lint`   |
 
-Configure SvelteKit in `vite.config.ts`. Import library files through
-`#lib/*`, as declared in `package.json`, and include the file extension.
+`pnpm install` runs SvelteKit sync and installs the hooks in
+[lefthook.yml](./lefthook.yml). The pre-push hook checks types, lint, and formatting.
+[CI](./.github/workflows/ci.yml) runs those checks and a production build, then
+starts the built server and requests the homepage.
 
-`pnpm sync` regenerates types after changes to `src/env.ts` or SvelteKit config.
+## Code references
 
-## Reference docs
+SvelteKit configuration lives in [vite.config.ts](./vite.config.ts).
+Library imports use `#lib/*` from `package.json` and include file extensions,
+for example `#lib/cn.ts`.
 
-| File                           | Contents                                        |
-| ------------------------------ | ----------------------------------------------- |
-| `README.md` (this file)        | Description of this template repository         |
-| [`TEMPLATE.md`](./TEMPLATE.md) | Full project setup recipe and optional features |
-| [`AGENTS.md`](./AGENTS.md)     | AI agent instructions and cloud workflow        |
+| File                                                                               | Purpose                                                                  |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [src/routes/+layout.svelte](./src/routes/+layout.svelte)                           | Header, main content, and footer                                         |
+| [src/lib/components/atoms/button.svelte](./src/lib/components/atoms/button.svelte) | Component and variant reference                                          |
+| [src/app.css](./src/app.css)                                                       | Theme tokens, fluid typography, and global focus styles                  |
+| [src/hooks.server.ts](./src/hooks.server.ts)                                       | HTTPS and `www.` redirects, with localhost and Railway domain exceptions |
+| [src/routes/robots.txt/+server.ts](./src/routes/robots.txt/+server.ts)             | Crawler policy                                                           |
+| [src/routes/sitemap.xml/+server.ts](./src/routes/sitemap.xml/+server.ts)           | Sitemap generation                                                       |
+
+## Documentation
+
+- [TEMPLATE.md](./TEMPLATE.md) describes how to start a project from this repo.
+- [AGENTS.md](./AGENTS.md) contains project-specific agent instructions.
+- New projects use `BRAND.md` for audience, positioning, and voice, and
+  `DESIGN.md` for visual rules. This template includes neither file.
 
 ## Languages
 
-Some of my projects may be in a different language than English. In this case,
-user-facing copy in `src/` uses the project's site locale. **English** is used
-for source code, documentation, tooling, AI conversations, commits, PRs, and issues.
+For projects in a language other than English, user-facing copy in `src/` uses
+the site's locale and grammar rules. Record those in the project's `AGENTS.md`.
+Use English for source code, documentation, tooling, AI conversations, commits,
+PRs, and issues.

@@ -1,62 +1,30 @@
 # Agent instructions
 
-Read `README.md` first for local setup, services, integrations, and reference docs.
-If docs and code disagree, trust the code and update the docs in the same change.
-If anything is unclear or two instructions conflict, stop and ask.
+Read `README.md` first. Use `TEMPLATE.md` when bootstrapping a new project.
+Global rules and skills come from [agentfiles](https://github.com/martindzejky/agentfiles).
+Keep this file limited to project-specific instructions.
 
 ## Code and verification
 
-When you finish, run `pnpm fix` and `pnpm check`. Also run `pnpm build` when the change can affect the production build.
-Write simple, minimal code.
-Prefer patterns already in the repo.
-Use `cva` from `class-variance-authority` for named Tailwind variants.
-Use `cn()` from `#lib/cn.ts` for conditionals, and pass a parent `class` prop through it last so the parent wins.
-The prop is `class`. Events are `onclick`.
-See the `tailwind-cva` skill and `src/lib/components/atoms/button.svelte`.
-Keep the UI accessible.
-Do not add features or APIs nobody asked for.
-Put temporary files in `tmp/`, not the repo root.
+Run `pnpm fix` and `pnpm check` before finishing. Run `pnpm build` when the change
+can affect the production build.
 
-Run `pnpm sync` if `pnpm check` misses `$app/env/*` exports after you edit `src/env.ts`.
+- SvelteKit configuration lives in `vite.config.ts`.
+- Use `#lib/*` imports with file extensions, including `#lib/cn.ts`.
+- Use `src/lib/components/atoms/button.svelte` as the component reference.
+- Put temporary files in `tmp/`.
 
-## Design and brand
+When adding environment variables, declare them in `src/env.ts` and document them
+in `.env.example`. Run `pnpm sync` after changes to regenerate `$app/env/*` exports.
 
-If `BRAND.md` and `DESIGN.md` exist, read `BRAND.md` first for the why, then `DESIGN.md` for the how, before any UI or visual work.
-Ship visual changes together with the matching `DESIGN.md` update.
+## New projects
 
-Use the `brand-md` and `design-md` skills when you create or edit these files.
+Keep `TEMPLATE.md` in this repository. Replace template content and document the
+new project's setup in its own `README.md`.
 
-## Git hooks
+New projects use `BRAND.md` for audience, positioning, and voice, and `DESIGN.md`
+for visual rules. Read them in that order before visual work. Keep visual changes
+and the matching `DESIGN.md` update together.
 
-`lefthook` runs `pnpm check`, `pnpm lint`, and `pnpm format` on `git push`.
-`pnpm install` installs the hooks. The `prepare` script runs `lefthook install`.
-
-## Languages
-
-Use this section only when user-facing copy is not English.
-
-`<SITE_LOCALE>` is a placeholder. Replace it with the project's locale and grammar rules, for example Slovak, feminine form, with diacritics.
-
-- `<SITE_LOCALE>` is for user-facing website copy in `src/`, including strings you add or edit.
-- English is for source code, docs, AI chat, commits, PRs, and issues.
-
-## Cloud workflow
-
-Use this section in any cloud environment, for any agent, when nobody is there to answer a prompt. Setup and which services exist still come from `README.md`.
-
-### Environment
-
-Variables and secrets come from the process environment. The platform running the agent injects them. Do not create a `.env` file.
-Every key in `.env.example` needs a value there. Use a placeholder for a key this task does not need. Do not set a key to an empty string.
-If a required variable is missing, name the key, tell the user, and stop.
-
-### Services
-
-Skip this when the project has no local services.
-
-Start Docker if it is not already running, then run `docker compose up -d`. The README names the services.
-If Docker is not available, say so and stop.
-Wait until Postgres is `healthy` in `docker compose ps` before a migration or a worker.
-If migrate fails on a fresh Postgres volume, run `docker compose down -v`, start the services again, and retry.
-When the project has a background worker, run it in its own process. The README says how.
-The first Vite SSR request on a cold machine can take 15 to 18 seconds. Later requests are fast.
+If site copy is not English, record the actual locale and grammar rules in the
+new project's `AGENTS.md`. Keep code, docs, and tooling in English.
