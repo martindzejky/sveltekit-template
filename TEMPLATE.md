@@ -115,8 +115,13 @@ Provision PostgreSQL and configure environment values when needed. Use
 `pnpm db:migrate` as a pre-deploy command when the project has migrations.
 Deploy a standalone worker as a separate service when required.
 
-Review [src/hooks.server.ts](./src/hooks.server.ts) for the site's domain and
-Railway preview hosts. Adapt the [robots endpoint](./src/routes/robots.txt/+server.ts)
+Set `CANONICAL_ORIGIN` to the production HTTPS origin (see `.env.example`) to
+enable redirects in [src/hooks.server.ts](./src/hooks.server.ts). The configured
+hostname and its `www`/non-`www` counterpart redirect to that origin in one step,
+preserving the path and query. Development and unrelated preview hosts are left
+alone. Leave it unset to disable redirects.
+
+Adapt the [robots endpoint](./src/routes/robots.txt/+server.ts)
 and [sitemap endpoint](./src/routes/sitemap.xml/+server.ts) to the project's
 public routes.
 

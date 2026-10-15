@@ -58,14 +58,14 @@ SvelteKit configuration lives in [vite.config.ts](./vite.config.ts).
 Library imports use `#lib/*` from `package.json` and include file extensions,
 for example `#lib/cn.ts`.
 
-| File                                                                               | Purpose                                                                  |
-| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [src/routes/+layout.svelte](./src/routes/+layout.svelte)                           | Header, main content, and footer                                         |
-| [src/lib/components/atoms/button.svelte](./src/lib/components/atoms/button.svelte) | Component and variant reference                                          |
-| [src/app.css](./src/app.css)                                                       | Theme tokens, fluid typography, and global focus styles                  |
-| [src/hooks.server.ts](./src/hooks.server.ts)                                       | HTTPS and `www.` redirects, with localhost and Railway domain exceptions |
-| [src/routes/robots.txt/+server.ts](./src/routes/robots.txt/+server.ts)             | Crawler policy                                                           |
-| [src/routes/sitemap.xml/+server.ts](./src/routes/sitemap.xml/+server.ts)           | Sitemap generation                                                       |
+| File                                                                               | Purpose                                                        |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| [src/routes/+layout.svelte](./src/routes/+layout.svelte)                           | Header, main content, and footer                               |
+| [src/lib/components/atoms/button.svelte](./src/lib/components/atoms/button.svelte) | Component and variant reference                                |
+| [src/app.css](./src/app.css)                                                       | Theme tokens, fluid typography, and global focus styles        |
+| [src/hooks.server.ts](./src/hooks.server.ts)                                       | Optional production redirects configured by `CANONICAL_ORIGIN` |
+| [src/routes/robots.txt/+server.ts](./src/routes/robots.txt/+server.ts)             | Crawler policy                                                 |
+| [src/routes/sitemap.xml/+server.ts](./src/routes/sitemap.xml/+server.ts)           | Sitemap generation                                             |
 
 ## Documentation
 

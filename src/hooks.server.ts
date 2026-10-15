@@ -1,29 +1,27 @@
+import { dev } from '$app/env';
+import { CANONICAL_ORIGIN } from '$app/env/private';
 import { redirect } from '@sveltejs/kit';
 import type { Handle } from '@sveltejs/kit/hooks';
 
+const canonical = CANONICAL_ORIGIN ? new URL(CANONICAL_ORIGIN) : undefined;
+
 export const handle: Handle = async ({ event, resolve }) => {
-  // ignore localhost
-  if (event.url.hostname.startsWith('localhost')) {
-    return resolve(event);
-  }
+  if (dev || !canonical) return resolve(event);
 
-  // force https
-  if (!event.url.protocol.startsWith('https:')) {
+  const hostname = canonical.hostname;
+  const alternateHostname = hostname.startsWith('www.')
+    ? hostname.slice(4)
+    : `www.${hostname}`;
+
+  if (
+    (event.url.hostname === hostname ||
+      event.url.hostname === alternateHostname) &&
+    event.url.origin !== canonical.origin
+  ) {
     const target = new URL(event.url);
-    target.protocol = 'https:';
-    return redirect(308, target, { external: [target.origin] });
-  }
-
-  // ignore Railway generated domains
-  if (event.url.hostname.endsWith('.up.railway.app')) {
-    return resolve(event);
-  }
-
-  // force www
-  if (!event.url.hostname.startsWith('www.')) {
-    const target = new URL(event.url);
-    target.hostname = 'www.' + target.hostname;
-    return redirect(308, target, { external: [target.origin] });
+    target.protocol = canonical.protocol;
+    target.host = canonical.host;
+    return redirect(308, target, { external: [canonical.origin] });
   }
 
   return resolve(event);

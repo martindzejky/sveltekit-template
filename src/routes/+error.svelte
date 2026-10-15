@@ -2,6 +2,16 @@
   import { page } from '$app/state';
 </script>
 
+<svelte:head>
+  <title>{page.status} — SvelteKit Template</title>
+  <meta
+    name="description"
+    content={page.status === 404
+      ? 'This page could not be found.'
+      : 'Something went wrong.'}
+  />
+</svelte:head>
+
 <section
   class="mx-auto flex max-w-medium flex-col items-center gap-4 px-4 py-16 text-center"
 >
