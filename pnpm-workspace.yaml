@@ -2,3 +2,7 @@ allowBuilds:
   esbuild: true
   lefthook: true
   sharp: true
+
+# TypeScript ESLint still requests minimatch 10; the security fix starts in 11.
+overrides:
+  'minimatch@>=7.0.0 <11.0.1': 11.0.5
